@@ -1,0 +1,10 @@
+.leftBar {
+  grid-area: lbar;
+  background: #332c1d;
+  text-align: center;
+}
+
+.item {
+  color: gold;
+  font-size: 25px;
+}
