@@ -5,6 +5,15 @@
 }
 
 .item {
-  color: gold;
+  padding: 10px;
+}
+
+.item a {
+  color: white;
   font-size: 25px;
+  text-decoration: none;
+}
+
+.item a.activeLink {
+  color: gold;
 }

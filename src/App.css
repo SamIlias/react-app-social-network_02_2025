@@ -1,8 +1,13 @@
 .app-wrapper {
   display: grid;
   grid-template-areas: "header header" "lbar main";
-  grid-template-rows: 1fr 10fr;
+  grid-template-rows: 120px 1200px;
   grid-template-columns: 2fr 10fr;
   width: 1200px;
   margin: 0 auto;
+}
+
+.app-wrapper-content {
+  grid-area: main;
+  background-color: grey;
 }
