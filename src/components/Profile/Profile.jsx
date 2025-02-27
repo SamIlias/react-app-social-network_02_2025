@@ -1,15 +1,11 @@
-import s from "./Profile.module.css";
+import style from "./Profile.module.css";
 import MyPosts from "./MyPosts/MyPosts.jsx";
+import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 const Profile = () => {
   return (
-    <div className={s.mainContent}>
-      <img
-        className={s.mainWallpaper}
-        src="https://static.vecteezy.com/system/resources/thumbnails/023/790/661/small_2x/beautiful-lake-under-the-mountains-ai-generated-photo.jpg"
-        alt=""
-      />
-      <div>ava + descriptions</div>
+    <div className={style.mainContent}>
+      <ProfileInfo />
       <MyPosts />
     </div>
   );

@@ -9,7 +9,7 @@ import Settings from "./components/Settings/Settings.jsx";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+function App({ data }) {
   return (
     <BrowserRouter>
       <div className="app-wrapper">
@@ -18,7 +18,7 @@ function App() {
         <div className="app-wrapper-content">
           <Routes>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/dialogs" element={<Dialogs />} />
+            <Route path="/dialogs/*" element={<Dialogs data={data} />} />
             <Route path="/news" element={<News />} />
             <Route path="/music" element={<Music />} />
             <Route path="/settings" element={<Settings />} />

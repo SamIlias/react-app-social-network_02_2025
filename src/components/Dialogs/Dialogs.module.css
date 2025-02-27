@@ -1,4 +1,28 @@
 .mainContent {
   grid-area: main;
   background-color: grey;
+  display: grid;
+  grid-template-columns: 4fr 10fr;
 }
+
+.dialogsItems {
+  font-size: 30px;
+  padding: 20px;
+}
+
+.dialogsItems a {
+  color: white;
+  text-decoration: none;
+}
+
+.dialogsItems .activeLink {
+  color: gold;
+}
+
+.messages {
+  font-size: 30px;
+  padding: 20px;
+  color: white;
+}
+
+.message {}
