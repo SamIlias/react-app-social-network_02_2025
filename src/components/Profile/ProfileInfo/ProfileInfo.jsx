@@ -8,7 +8,7 @@ const ProfileInfo = () => {
         src="https://static.vecteezy.com/system/resources/thumbnails/023/790/661/small_2x/beautiful-lake-under-the-mountains-ai-generated-photo.jpg"
         alt=""
       />
-      <div>ava + descriptions</div>
+      <div className={s.description}>ava + descriptions</div>
     </div>
   );
 };

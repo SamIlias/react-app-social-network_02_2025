@@ -6,3 +6,9 @@
 .mainWallpaper {
   width: 100%;
 }
+
+.description {
+  padding: 20px;
+  font-size: 25px;
+  font-weight: bold;
+}

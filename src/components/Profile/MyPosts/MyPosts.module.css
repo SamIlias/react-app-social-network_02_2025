@@ -1,13 +1,20 @@
-.textArea {
-  background-color: grey;
+.posts {
+  padding: 20px;
+}
+
+.textarea {
+  background-color: #d1d1d1;
   display: block;
-  width: 500px;
+  width: 50%;
+  height: 40px;
+  margin: 10px 0px;
+  background-color: #d1d1d1;
+  font-size: 20px;
 }
 
 .button {
   background-color: brown;
   display: block;
   color: gold;
-  width: 100px;
   font-size: 25px;
 }
