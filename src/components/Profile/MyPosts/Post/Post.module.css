@@ -1,10 +1,15 @@
 .item {
   color: white;
-  font-size: 20px;
   margin: 20px;
 }
 
 .item img {
-  width: 100px;
+  width: 50px;
   border-radius: 40px;
+}
+
+.item span {
+  font-size: 25px;
+  padding: 0 10px;
+  vertical-align: super;
 }

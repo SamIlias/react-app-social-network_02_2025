@@ -1,7 +1,7 @@
 .app-wrapper {
   display: grid;
   grid-template-areas: "header header" "lbar main";
-  grid-template-rows: 120px 1200px;
+  grid-template-rows: 120px 100%;
   grid-template-columns: 2fr 10fr;
   width: 1200px;
   margin: 0 auto;

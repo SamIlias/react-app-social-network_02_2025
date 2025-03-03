@@ -7,7 +7,7 @@ const Post = (props) => {
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDl6bQlvEFpaiRXfXAYDF9wkS8MulY4IrqkA&s"
         alt=""
       />
-      {props.postText}
+      <span>{props.postText}</span>
     </div>
   );
 };

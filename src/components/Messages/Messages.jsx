@@ -3,19 +3,29 @@ import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
 
-const Messages = ({ data }) => {
-  const dialogsItems = data.dialogsData.map((d) => (
+const Messages = (props) => {
+  const dialogsItems = props.data.dialogsData.map((d) => (
     <DialogsItem id={d.id} name={d.name} />
   ));
 
-  const messagesItems = data.messagesData.map((messageData) => (
+  const messagesItems = props.data.messagesData.map((messageData) => (
     <MessagesItem itemData={messageData} />
   ));
 
   const newMessageElement = React.createRef();
+
   const addMessage = () => {
     const messageText = newMessageElement.current.value;
-    alert(messageText);
+    props.addMessage(messageText);
+  };
+
+  const onChangeMessageHandler = () => {
+    const messageText = newMessageElement.current.value;
+    props.updateNewMessageText(messageText);
+  };
+
+  const clearArea = () => {
+    props.updateNewMessageText("");
   };
 
   return (
@@ -27,6 +37,9 @@ const Messages = ({ data }) => {
           <textarea
             className={style.textarea}
             ref={newMessageElement}
+            onChange={onChangeMessageHandler}
+            onClick={clearArea}
+            value={props.data.newMessageText}
           ></textarea>
         </div>
         <div>

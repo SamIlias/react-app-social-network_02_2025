@@ -3,6 +3,12 @@
   color: white;
   background: brown;
   font-size: 50px;
+  padding: 20px;
+}
+
+.header span {
+  vertical-align: super;
+  padding: 10px;
 }
 
 .header img {

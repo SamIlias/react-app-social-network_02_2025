@@ -5,17 +5,32 @@ import React from "react";
 const MyPosts = (props) => {
   const newPostElement = React.createRef();
 
-  const addPost = () => {
+  const onButtonClickHandler = () => {
+    props.addPost();
+  };
+
+  const onChangeNewPostHandler = () => {
     const text = newPostElement.current.value;
-    props.addPost(text);
+    props.updateNewPostText(text);
+  };
+
+  const clearArea = () => {
+    props.updateNewPostText("");
   };
 
   const posts = props.posts.map((post) => <Post postText={post.text} />);
+
   return (
     <div className={s.posts}>
       <h2>My posts</h2>{" "}
-      <textarea className={s.textarea} ref={newPostElement}></textarea>
-      <button className={s.button} onClick={addPost}>
+      <textarea
+        className={s.textarea}
+        ref={newPostElement}
+        onChange={onChangeNewPostHandler}
+        onClick={clearArea}
+        value={props.newPostText}
+      />
+      <button className={s.button} onClick={onButtonClickHandler}>
         Add post
       </button>
       {posts}

@@ -7,36 +7,41 @@ import News from "./components/News/News.jsx";
 import Music from "./components/Music/Music.jsx";
 import Settings from "./components/Settings/Settings.jsx";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-function App(props) {
+function App({ store }) {
   return (
-    <BrowserRouter>
-      <div className="app-wrapper">
-        <Header />
-        <LeftBar items={props.state.leftBar.items} />
-        <div className="app-wrapper-content">
-          <Routes>
-            <Route
-              path="/profile"
-              element={
-                <Profile
-                  data={props.state.profilePageData}
-                  addPost={props.addPost}
-                />
-              }
-            />
-            <Route
-              path="/messages/*"
-              element={<Messages data={props.state.messagesPageData} />}
-            />
-            <Route path="/news" element={<News />} />
-            <Route path="/music" element={<Music />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
-        </div>
+    <div className="app-wrapper">
+      <Header />
+      <LeftBar items={store._state.leftBar.items} />
+      <div className="app-wrapper-content">
+        <Routes>
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                data={store._state.profilePageData}
+                addPost={store.addPost.bind(store)}
+                updateNewPostText={store.updateNewPostText.bind(store)}
+              />
+            }
+          />
+          <Route
+            path="/messages/*"
+            element={
+              <Messages
+                data={store._state.messagesPageData}
+                updateNewMessageText={store.updateNewMessageText.bind(store)}
+                addMessage={store.addMessage.bind(store)}
+              />
+            }
+          />
+          <Route path="/news" element={<News />} />
+          <Route path="/music" element={<Music />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
       </div>
-    </BrowserRouter>
+    </div>
   );
 }
 
