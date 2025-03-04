@@ -1,5 +1,7 @@
-import messageAvaOrange from "../assets/messageAvaOrange.png";
 import blueCircle from "../assets/blueCircle.png";
+import profileReducer from "./profile-reducer";
+import messagesReducer from "./messages-reducer";
+import messageAvaOrange from "../assets/messageAvaOrange.png";
 
 const store = {
   _state: {
@@ -7,7 +9,7 @@ const store = {
       items: ["Profile", "Messages", "News", "Music", "Settings"],
     },
     profilePageData: {
-      newPostText: "Write your post here",
+      newPostText: "",
       posts: [
         { id: 1, text: "Here is my first post!" },
         { id: 2, text: "Yo! It is cool!" },
@@ -21,7 +23,7 @@ const store = {
         { id: 4, name: "Victor" },
         { id: 5, name: "Bro" },
       ],
-      newMessageText: "Write your message here",
+      newMessageText: "",
       messagesData: [
         {
           message: "Hello, my friend!",
@@ -39,58 +41,30 @@ const store = {
     },
   },
 
-  _generateId(seed) {
-    return seed.length + 1;
-  },
-
   _callSubscriber(store) {
     console.log("State has changed");
   },
 
-  addPost() {
-    if (!this._state.profilePageData.newPostText) {
-      return;
-    }
-    const seed = this._state.profilePageData.posts;
-    const newPost = {
-      id: this._generateId(seed),
-      text: this._state.profilePageData.newPostText,
-    };
-
-    this._state.profilePageData.posts.push(newPost);
-    this._state.profilePageData.newPostText = "";
-    this._callSubscriber(this);
-  },
-
-  updateNewPostText(text) {
-    this._state.profilePageData.newPostText = text;
-
-    this._callSubscriber(this);
-  },
-
-  updateNewMessageText(text) {
-    this._state.messagesPageData.newMessageText = text;
-
-    this._callSubscriber(this);
-  },
-
-  addMessage(text) {
-    if (!this._state.messagesPageData.newMessageText) {
-      return;
-    }
-
-    const newMessage = {
-      message: text,
-      image: messageAvaOrange,
-    };
-
-    this._state.messagesPageData.messagesData.push(newMessage);
-    this._state.messagesPageData.newMessageText = "";
-    this._callSubscriber(this);
+  getState() {
+    return this._state;
   },
 
   subscribe(observer) {
     this._callSubscriber = observer;
+  },
+
+  dispatch(action) {
+    this._state.profilePageData = profileReducer(
+      this._state.profilePageData,
+      action,
+    );
+
+    this._state.messagesPageData = messagesReducer(
+      this._state.messagesPageData,
+      action,
+    );
+
+    this._callSubscriber(this);
   },
 };
 

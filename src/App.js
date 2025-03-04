@@ -13,16 +13,15 @@ function App({ store }) {
   return (
     <div className="app-wrapper">
       <Header />
-      <LeftBar items={store._state.leftBar.items} />
+      <LeftBar items={store.getState().leftBar.items} />
       <div className="app-wrapper-content">
         <Routes>
           <Route
             path="/profile"
             element={
               <Profile
-                data={store._state.profilePageData}
-                addPost={store.addPost.bind(store)}
-                updateNewPostText={store.updateNewPostText.bind(store)}
+                data={store.getState().profilePageData}
+                dispatch={store.dispatch.bind(store)}
               />
             }
           />
@@ -30,9 +29,8 @@ function App({ store }) {
             path="/messages/*"
             element={
               <Messages
-                data={store._state.messagesPageData}
-                updateNewMessageText={store.updateNewMessageText.bind(store)}
-                addMessage={store.addMessage.bind(store)}
+                data={store.getState().messagesPageData}
+                dispatch={store.dispatch.bind(store)}
               />
             }
           />
