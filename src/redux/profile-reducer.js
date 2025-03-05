@@ -11,7 +11,15 @@ const generateId = (seed) => {
   return seed.length + 1;
 };
 
-const profileReducer = (state, action) => {
+const initialState = {
+  newPostText: "",
+  posts: [
+    { id: 1, text: "Here is my first post!" },
+    { id: 2, text: "Yo! It is cool!" },
+  ],
+};
+
+const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST:
       if (!state.newPostText) {

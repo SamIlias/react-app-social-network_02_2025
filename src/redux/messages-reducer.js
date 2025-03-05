@@ -1,4 +1,6 @@
+import blueCircle from "../assets/blueCircle.png";
 import messageAvaOrange from "../assets/messageAvaOrange.png";
+
 const SEND_MESSAGE = "SEND-MESSAGE";
 const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
 
@@ -11,7 +13,32 @@ export const updateNewMessageTextActionCreator = (text) => ({
   text: text,
 });
 
-const messagesReducer = (state, action) => {
+const initialState = {
+  dialogsData: [
+    { id: 1, name: "Sam" },
+    { id: 2, name: "Andrew" },
+    { id: 3, name: "Nastya" },
+    { id: 4, name: "Victor" },
+    { id: 5, name: "Bro" },
+  ],
+  newMessageText: "",
+  messagesData: [
+    {
+      message: "Hello, my friend!",
+      image: messageAvaOrange,
+    },
+    {
+      message: "Look at this!",
+      image: blueCircle,
+    },
+    {
+      message: "What in the world you doing!",
+      image: blueCircle,
+    },
+  ],
+};
+
+const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_TEXT:
       state.newMessageText = action.text;

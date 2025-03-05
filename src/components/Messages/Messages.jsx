@@ -8,11 +8,11 @@ import {
 } from "../../redux/messages-reducer";
 
 const Messages = (props) => {
-  const dialogsItems = props.data.dialogsData.map((d) => (
+  const dialogsItems = props.state.dialogsData.map((d) => (
     <DialogsItem id={d.id} name={d.name} />
   ));
 
-  const messagesItems = props.data.messagesData.map((messageData) => (
+  const messagesItems = props.state.messagesData.map((messageData) => (
     <MessagesItem itemData={messageData} />
   ));
 
@@ -37,7 +37,7 @@ const Messages = (props) => {
             className={style.textarea}
             ref={newMessageElement}
             onChange={onChangeMessage}
-            value={props.data.newMessageText}
+            value={props.state.newMessageText}
             placeholder="Write your message here..."
           ></textarea>
         </div>

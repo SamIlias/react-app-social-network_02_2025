@@ -9,19 +9,19 @@ import Settings from "./components/Settings/Settings.jsx";
 
 import { Routes, Route } from "react-router-dom";
 
-function App({ store }) {
+function App(props) {
   return (
     <div className="app-wrapper">
       <Header />
-      <LeftBar items={store.getState().leftBar.items} />
+      <LeftBar items={props.state.leftbar.items} />
       <div className="app-wrapper-content">
         <Routes>
           <Route
             path="/profile"
             element={
               <Profile
-                data={store.getState().profilePageData}
-                dispatch={store.dispatch.bind(store)}
+                state={props.state.profilePage}
+                dispatch={props.dispatch}
               />
             }
           />
@@ -29,8 +29,8 @@ function App({ store }) {
             path="/messages/*"
             element={
               <Messages
-                data={store.getState().messagesPageData}
-                dispatch={store.dispatch.bind(store)}
+                state={props.state.messagesPage}
+                dispatch={props.dispatch}
               />
             }
           />
