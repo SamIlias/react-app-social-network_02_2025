@@ -2,29 +2,25 @@ import React from "react";
 import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
-import {
-  sendMessageActionCreator,
-  updateNewMessageTextActionCreator,
-} from "../../redux/messages-reducer";
 
 const Messages = (props) => {
-  const dialogsItems = props.state.dialogsData.map((d) => (
+  const dialogsItems = props.dialogsList.map((d) => (
     <DialogsItem id={d.id} name={d.name} />
   ));
 
-  const messagesItems = props.state.messagesData.map((messageData) => (
+  const messagesItems = props.messagesList.map((messageData) => (
     <MessagesItem itemData={messageData} />
   ));
 
   const newMessageElement = React.createRef();
 
   const sendMessage = () => {
-    props.dispatch(sendMessageActionCreator());
+    props.sendMessage();
   };
 
   const onChangeMessage = (e) => {
     const messageText = e.target.value;
-    props.dispatch(updateNewMessageTextActionCreator(messageText));
+    props.updateNewMessageText(messageText);
   };
 
   return (
@@ -37,7 +33,7 @@ const Messages = (props) => {
             className={style.textarea}
             ref={newMessageElement}
             onChange={onChangeMessage}
-            value={props.state.newMessageText}
+            value={props.newMessageText}
             placeholder="Write your message here..."
           ></textarea>
         </div>

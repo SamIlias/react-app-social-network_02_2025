@@ -14,7 +14,7 @@ export const updateNewMessageTextActionCreator = (text) => ({
 });
 
 const initialState = {
-  dialogsData: [
+  dialogsList: [
     { id: 1, name: "Sam" },
     { id: 2, name: "Andrew" },
     { id: 3, name: "Nastya" },
@@ -22,7 +22,7 @@ const initialState = {
     { id: 5, name: "Bro" },
   ],
   newMessageText: "",
-  messagesData: [
+  messagesList: [
     {
       message: "Hello, my friend!",
       image: messageAvaOrange,
@@ -51,7 +51,7 @@ const messagesReducer = (state = initialState, action) => {
         message: state.newMessageText,
         image: messageAvaOrange,
       };
-      state.messagesData.push(newMessage);
+      state.messagesList.push(newMessage);
       state.newMessageText = "";
       return state;
     default:
