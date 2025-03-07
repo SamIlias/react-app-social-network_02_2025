@@ -2,7 +2,7 @@ const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 
 export const addPostAC = () => ({ type: ADD_POST });
-export const updateNewPostAC = (text) => ({
+export const updateNewPostTextAC = (text) => ({
   type: UPDATE_NEW_POST_TEXT,
   text: text,
 });
@@ -30,12 +30,16 @@ const profileReducer = (state = initialState, action) => {
         id: generateId(seed),
         text: state.newPostText,
       };
-      state.posts.push(newPost);
-      state.newPostText = "";
-      return state;
+      return {
+        ...state,
+        posts: [...state.posts, newPost],
+        newPostText: "",
+      };
     case UPDATE_NEW_POST_TEXT:
-      state.newPostText = action.text;
-      return state;
+      return {
+        ...state,
+        newPostText: action.text,
+      };
     default:
       return state;
   }

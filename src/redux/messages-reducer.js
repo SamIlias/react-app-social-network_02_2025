@@ -24,36 +24,46 @@ const initialState = {
   newMessageText: "",
   messagesList: [
     {
+      id: 1,
       message: "Hello, my friend!",
       image: messageAvaOrange,
     },
     {
+      id: 2,
       message: "Look at this!",
       image: blueCircle,
     },
     {
+      id: 3,
       message: "What in the world you doing!",
       image: blueCircle,
     },
   ],
 };
 
+const setID = (seed) => seed.length + 1;
+
 const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_TEXT:
-      state.newMessageText = action.text;
-      return state;
+      return {
+        ...state,
+        newMessageText: action.text,
+      };
     case SEND_MESSAGE:
       if (!state.newMessageText) {
-        return;
+        return state;
       }
       const newMessage = {
+        id: setID(state.messagesList),
         message: state.newMessageText,
         image: messageAvaOrange,
       };
-      state.messagesList.push(newMessage);
-      state.newMessageText = "";
-      return state;
+      return {
+        ...state,
+        messagesList: [...state.messagesList, newMessage],
+        newMessageText: "",
+      };
     default:
       return state;
   }

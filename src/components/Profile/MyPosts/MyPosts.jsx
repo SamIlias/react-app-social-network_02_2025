@@ -11,7 +11,7 @@ const MyPosts = (props) => {
 
   const onPostTextChange = (e) => {
     const text = e.target.value;
-    props.updateNewPost(text);
+    props.updateNewPostText(text);
   };
 
   const posts = props.posts.map((post) => <Post postText={post.text} />);
