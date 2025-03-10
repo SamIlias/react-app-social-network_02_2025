@@ -9,7 +9,6 @@ import {
 const mapStateToProps = (state) => {
   return {
     usersList: state.usersPage.usersList,
-    // [{id: 1, imageURL: "", followed: false, fullName: 'Hexicus P.', status: "I am a boss", location: {city: "Molo", country: "Belarus"}}]
   };
 };
 
@@ -23,12 +22,13 @@ const mapDispatchToProps = (dispatch) => {
       const action = unsubscribeAC(userId);
       dispatch(action);
     },
-    setUsers: (users) => {
-      const action = setUsersAC(users);
+    setUsers: (usersList) => {
+      const action = setUsersAC(usersList);
       dispatch(action);
     },
   };
 };
 
 const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users);
+
 export default UsersContainer;

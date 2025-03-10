@@ -3,24 +3,32 @@ const UNSUBSCRIBE = "UNSUBSCRIBE";
 const SET_USERS = "SET_USERS";
 
 const initialState = {
-  users: [
-    {
-      id: 1,
-      photoURL: "",
-      followed: false,
-      fullname: "Yra",
-      status: "I am a boss",
-      location: { city: "Molo", country: "Belarus" },
-    },
+  usersList: [
+    // {
+    //   id: 1,
+    //   photoURL: "",
+    //   followed: false,
+    //   fullname: "Yra",
+    //   status: "I am a boss",
+    //   location: { city: "Molo", country: "Belarus" },
+    // },
+    // {
+    //   id: 2,
+    //   photoURL: "",
+    //   followed: true,
+    //   fullname: "Sam",
+    //   status: "I am a boss too",
+    //   location: { city: "Minsk", country: "Belarus" },
+    // },
   ],
 };
 
 const usersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SUBSCRIBE":
+    case SUBSCRIBE:
       return {
         ...state,
-        users: state.users.map((u) => {
+        usersList: state.usersList.map((u) => {
           if (u.id === action.userID) {
             return { ...u, followed: true };
           }
@@ -28,10 +36,10 @@ const usersReducer = (state = initialState, action) => {
         }),
       };
 
-    case "UNSUBSCRIBE":
+    case UNSUBSCRIBE:
       return {
         ...state,
-        users: state.users.map((u) => {
+        usersList: state.usersList.map((u) => {
           if (u.id === action.userID) {
             return { ...u, followed: false };
           }
@@ -39,10 +47,10 @@ const usersReducer = (state = initialState, action) => {
         }),
       };
 
-    case "SET_USERS":
+    case SET_USERS:
       return {
         ...state,
-        users: [...state.users, ...action.users],
+        usersList: [...state.usersList, ...action.usersList],
       };
 
     default:
@@ -52,6 +60,6 @@ const usersReducer = (state = initialState, action) => {
 
 export const subscribeAC = (userID) => ({ type: SUBSCRIBE, userID });
 export const unsubscribeAC = (userID) => ({ type: UNSUBSCRIBE, userID });
-export const setUsersAC = (users) => ({ type: SET_USERS, users });
+export const setUsersAC = (usersList) => ({ type: SET_USERS, usersList });
 
 export default usersReducer;

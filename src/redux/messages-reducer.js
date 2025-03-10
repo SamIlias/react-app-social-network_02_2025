@@ -1,5 +1,5 @@
-import blueCircle from "../assets/blueCircle.png";
-import messageAvaOrange from "../assets/messageAvaOrange.png";
+import blueCircle from "../assets/images/blueCircle.png";
+import messageAvaOrange from "../assets/images/messageAvaOrange.png";
 
 const SEND_MESSAGE = "SEND-MESSAGE";
 const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
