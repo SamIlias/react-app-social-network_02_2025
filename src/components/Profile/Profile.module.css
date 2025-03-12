@@ -13,3 +13,13 @@
   font-size: 25px;
   font-weight: bold;
 }
+
+.userDescription span {
+  color: white;
+}
+
+.name span {
+  color: #4f020d;
+}
+
+.ava {}

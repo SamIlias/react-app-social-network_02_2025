@@ -3,12 +3,12 @@ import Users from "./Users";
 import Preloader from "../common/Preloader";
 import { connect } from "react-redux";
 import {
-  subscribeAC,
-  unsubscribeAC,
-  setUsersAC,
-  setCurrentPageAC,
-  setTotalUsersCountAC,
-  toggleIsFetchingAC,
+  subscribe,
+  unsubscribe,
+  setUsers,
+  setCurrentPage,
+  setTotalUsersCount,
+  toggleIsFetching,
 } from "../../redux/users-reducer";
 import axios from "axios";
 
@@ -21,35 +21,6 @@ const mapStateToProps = (state) => {
     pageSize: state.usersPage.pageSize,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    subscribe: (userId) => {
-      const action = subscribeAC(userId);
-      dispatch(action);
-    },
-    unsubscribe: (userId) => {
-      const action = unsubscribeAC(userId);
-      dispatch(action);
-    },
-    setUsers: (usersList) => {
-      const action = setUsersAC(usersList);
-      dispatch(action);
-    },
-    setCurrentPage: (pageNum) => {
-      const action = setCurrentPageAC(pageNum);
-      dispatch(action);
-    },
-    setTotalUsersCount: (count) => {
-      const action = setTotalUsersCountAC(count);
-      dispatch(action);
-    },
-    toggleIsFetching: (isFetching) => {
-      const action = toggleIsFetchingAC(isFetching);
-      dispatch(action);
-    },
   };
 };
 
@@ -98,4 +69,11 @@ class UsersContainer extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, {
+  subscribe,
+  unsubscribe,
+  setUsers,
+  setCurrentPage,
+  setTotalUsersCount,
+  toggleIsFetching,
+})(UsersContainer);
