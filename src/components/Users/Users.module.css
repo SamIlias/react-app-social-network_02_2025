@@ -1,0 +1,65 @@
+.content {
+  padding: 10px;
+}
+
+.usersItem {
+  padding: 10px;
+  margin: 15px;
+  display: grid;
+  grid-template-areas: "photo info" "button info";
+  grid-template-rows: 4fr 1fr;
+  grid-template-columns: 2fr 8fr;
+}
+
+.userInfo {
+  grid-area: info;
+  display: grid;
+  padding: 10px;
+  grid-template-areas: "name location" "status location";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3fr 1fr;
+  border: 1px solid;
+  border-color: #332c1d;
+  border-radius: 15px;
+  color: white;
+}
+
+.userPhoto {
+  width: 150px;
+  grid-area: photo;
+}
+
+.subscribeButton {
+  width: 150px;
+  font-size: 25px;
+  grid-area: button;
+  background-color: brown;
+  color: gold;
+}
+
+.userName {
+  font-size: 2rem;
+  grid-area: name;
+}
+
+.userStatus {
+  font-style: italic;
+  font-size: 2rem;
+  grid-area: status;
+}
+
+.userLocation {
+  font-size: 2rem;
+  grid-area: location;
+  text-align: right;
+}
+
+.selectedPage {
+  font-weight: bold;
+  color: gold;
+}
+
+.pageNumbers span {
+  font-size: 25px;
+  margin: 7px;
+}

@@ -1,22 +1,33 @@
 import React from "react";
-import axios from "axios";
 import userPhoto from "../../assets/images/userPhoto.png";
 import styles from "./Users.module.css";
 
-const URL = "https://social-network.samuraijs.com/api/1.0/users";
-
 const Users = (props) => {
-  const getUsers = () => {
-    if (props.usersList.length === 0) {
-      axios.get(URL).then((response) => {
-        props.setUsers(response.data.items);
-      });
-    }
-  };
+  // const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+  const pagesCount = 10;
+  const pages = [];
+
+  for (let i = 1; i <= pagesCount; i += 1) {
+    pages.push(i);
+  }
 
   return (
-    <div>
-      <button onClick={getUsers}>Get users</button>
+    <div className={styles.content}>
+      <div className={styles.pageNumbers}>
+        {pages.map((p) => {
+          return (
+            <span
+              className={props.currentPage === p ? styles.selectedPage : ""}
+              onClick={() => {
+                props.onChangePageNumber(p);
+              }}
+            >
+              {p}
+            </span>
+          );
+        })}
+      </div>
+
       {props.usersList.map((u) => (
         <div className={styles.usersItem}>
           <div className={styles.userPhoto}>
@@ -27,20 +38,22 @@ const Users = (props) => {
             />
           </div>
 
-          <div className={styles.subscribeButton}>
+          <div>
             {u.followed ? (
               <button
                 onClick={() => {
-                  props.unsubscribe();
+                  props.unsubscribe(u.id);
                 }}
+                className={styles.subscribeButton}
               >
                 Unsubscribe
               </button>
             ) : (
               <button
                 onClick={() => {
-                  props.subscribe();
+                  props.subscribe(u.id);
                 }}
+                className={styles.subscribeButton}
               >
                 Subscribe
               </button>
