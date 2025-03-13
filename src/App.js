@@ -1,5 +1,5 @@
 import "./App.css";
-import Header from "./components/Header/Header";
+import HeaderContainer from "./components/Header/HeaderContainer";
 import LeftbarContainer from "./components/LeftBar/LeftBarContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import News from "./components/News/News";
@@ -12,7 +12,7 @@ import { Routes, Route } from "react-router-dom";
 function App(props) {
   return (
     <div className="app-wrapper">
-      <Header />
+      <HeaderContainer />
       <LeftbarContainer />
       <div className="app-wrapper-content">
         <Routes>
