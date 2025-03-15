@@ -9,10 +9,12 @@ import {
   setCurrentPage,
   setTotalUsersCount,
   toggleIsFetching,
+  toggleSubscribingInProgress,
 } from "../../redux/users-reducer";
-import axios from "axios";
+// import axios from "axios";
+import { usersAPI } from "../../api/api";
 
-const URL = "https://social-network.samuraijs.com/api/1.0/users";
+// const URL = "https://social-network.samuraijs.com/api/1.0/users";
 
 const mapStateToProps = (state) => {
   return {
@@ -21,18 +23,19 @@ const mapStateToProps = (state) => {
     pageSize: state.usersPage.pageSize,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
+    subscribingInProgress: state.usersPage.subscribingInProgress,
   };
 };
 
 class UsersContainer extends React.Component {
   componentDidMount() {
     this.props.toggleIsFetching(true);
-    axios
-      .get(`${URL}?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-      .then((response) => {
+    usersAPI
+      .getUsers(this.props.currentPage, this.props.pageSize)
+      .then((data) => {
         this.props.toggleIsFetching(false);
-        this.props.setUsers(response.data.items);
-        this.props.setTotalUsersCount(response.data.totalCount);
+        this.props.setUsers(data.items);
+        this.props.setTotalUsersCount(data.totalCount);
       });
   }
 
@@ -43,11 +46,12 @@ class UsersContainer extends React.Component {
 
     this.props.setCurrentPage(pageNumber);
     this.props.toggleIsFetching(true);
-    axios
-      .get(`${URL}?page=${pageNumber}&count=${this.props.pageSize}`)
-      .then((response) => {
+
+    usersAPI
+      .getUsers(this.props.currentPage, this.props.pageSize)
+      .then((data) => {
         this.props.toggleIsFetching(false);
-        this.props.setUsers(response.data.items);
+        this.props.setUsers(data.items);
       });
   };
 
@@ -63,6 +67,8 @@ class UsersContainer extends React.Component {
           usersList={this.props.usersList}
           unsubscribe={this.props.unsubscribe}
           subscribe={this.props.subscribe}
+          toggleSubscribingInProgress={this.props.toggleSubscribingInProgress}
+          subscribingInProgress={this.props.subscribingInProgress}
         />
       </>
     );
@@ -76,4 +82,5 @@ export default connect(mapStateToProps, {
   setCurrentPage,
   setTotalUsersCount,
   toggleIsFetching,
+  toggleSubscribingInProgress,
 })(UsersContainer);

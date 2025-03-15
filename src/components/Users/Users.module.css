@@ -37,6 +37,12 @@
   color: gold;
 }
 
+:disabled {
+  background-color: dimgrey;
+  color: linen;
+  opacity: 1;
+}
+
 .userName {
   font-size: 2rem;
   grid-area: name;

@@ -15,3 +15,7 @@
   width: 80px;
   border-radius: 80px;
 }
+
+.login {
+  float: right;
+}

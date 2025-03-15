@@ -4,6 +4,7 @@ const SET_USERS = "SET_USERS";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const TOGGLE_SUBSCRIBING_IN_PROGRESS = "TOGGLE_SUBSCRIBING_IN_PROGRESS";
 
 const initialState = {
   usersList: [],
@@ -11,6 +12,7 @@ const initialState = {
   pageSize: 5,
   currentPage: 1,
   isFetching: true,
+  subscribingInProgress: [],
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -61,6 +63,14 @@ const usersReducer = (state = initialState, action) => {
         isFetching: action.isFetching,
       };
 
+    case TOGGLE_SUBSCRIBING_IN_PROGRESS:
+      return {
+        ...state,
+        subscribingInProgress: action.isFetching
+          ? [...state.subscribingInProgress, action.userId]
+          : state.subscribingInProgress.filter((id) => id !== action.userId),
+      };
+
     default:
       return state;
   }
@@ -80,6 +90,11 @@ export const setTotalUsersCount = (count) => ({
 export const toggleIsFetching = (isFetching) => ({
   type: TOGGLE_IS_FETCHING,
   isFetching,
+});
+export const toggleSubscribingInProgress = (isFetching, userId) => ({
+  type: TOGGLE_SUBSCRIBING_IN_PROGRESS,
+  isFetching,
+  userId,
 });
 
 export default usersReducer;

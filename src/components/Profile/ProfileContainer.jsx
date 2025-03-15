@@ -13,29 +13,11 @@ import { useParams } from "react-router-dom";
 
 const profileURL = "https://social-network.samuraijs.com/api/1.0/profile/";
 
-// class ProfileContainer extends React.Component {
-//   componentDidMount() {
-//     // let userId = this.props.match.params.userId;
-//     let userId = 12;
-//     if (!userId) {
-//       userId = 1;
-//     }
-//     axios
-//       .get(`${profileURL}${userId}`) //todo handle user id
-//       .then((response) => {
-//         this.props.setUserProfile(response.data);
-//       });
-//   }
-//
-//   render() {
-//     return <Profile {...this.props} profile={this.props.profile} />;
-//   }
-// }
 const ProfileContainer = ({ profile, setUserProfile, ...props }) => {
   const { userId } = useParams(); // Get userId from URL
 
   useEffect(() => {
-    let id = userId || 2; // Default to 1 if no userId
+    let id = userId || 32241; // Default to 1 if no userId
     axios.get(`${profileURL}${id}`).then((response) => {
       setUserProfile(response.data);
     });
