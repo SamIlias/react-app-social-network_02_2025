@@ -1,3 +1,5 @@
+import { usersAPI } from "../api/api";
+
 const SUBSCRIBE = "SUBSCRIBE";
 const UNSUBSCRIBE = "UNSUBSCRIBE";
 const SET_USERS = "SET_USERS";
@@ -76,8 +78,8 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
-export const subscribe = (userID) => ({ type: SUBSCRIBE, userID });
-export const unsubscribe = (userID) => ({ type: UNSUBSCRIBE, userID });
+export const subscribeSuccess = (userID) => ({ type: SUBSCRIBE, userID });
+export const unsubscribeSuccess = (userID) => ({ type: UNSUBSCRIBE, userID });
 export const setUsers = (usersList) => ({ type: SET_USERS, usersList });
 export const setCurrentPage = (pageNum) => ({
   type: SET_CURRENT_PAGE,
@@ -96,5 +98,41 @@ export const toggleSubscribingInProgress = (isFetching, userId) => ({
   isFetching,
   userId,
 });
+
+//getUsersThunkCreator
+export const getUsers = (currentPage, pageSize) => {
+  return (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+      dispatch(toggleIsFetching(false));
+      dispatch(setUsers(data.items));
+      dispatch(setTotalUsersCount(data.totalCount));
+    });
+  };
+};
+
+export const unsubscribe = (userId) => {
+  return (dispatch) => {
+    dispatch(toggleSubscribingInProgress(true, userId));
+    usersAPI.unsubscribeFromUser(userId).then((data) => {
+      if (data.resultCode === 0) {
+        dispatch(unsubscribeSuccess(userId));
+      }
+      dispatch(toggleSubscribingInProgress(false, userId));
+    });
+  };
+};
+
+export const subscribe = (userId) => {
+  return (dispatch) => {
+    dispatch(toggleSubscribingInProgress(true, userId));
+    usersAPI.subscribeToUser(userId).then((data) => {
+      if (data.resultCode === 0) {
+        dispatch(subscribeSuccess(userId));
+      }
+      dispatch(toggleSubscribingInProgress(false, userId));
+    });
+  };
+};
 
 export default usersReducer;

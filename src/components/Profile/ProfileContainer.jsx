@@ -17,7 +17,7 @@ const ProfileContainer = ({ profile, setUserProfile, ...props }) => {
   const { userId } = useParams(); // Get userId from URL
 
   useEffect(() => {
-    let id = userId || 32241; // Default to 1 if no userId
+    let id = userId || 32241;
     axios.get(`${profileURL}${id}`).then((response) => {
       setUserProfile(response.data);
     });
