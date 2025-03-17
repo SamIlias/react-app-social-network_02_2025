@@ -37,25 +37,21 @@ class UsersContainer extends React.Component {
   };
 
   render() {
-    return (
-      <>
-        {this.props.isFetching ? (
-          <div className={styles.content}>
-            <Preloader />
-          </div>
-        ) : null}
+    if (this.props.isFetching) {
+      return <Preloader className={styles.content} />;
+    }
 
-        <Users
-          totalUsersCount={this.props.totalUsersCount}
-          pageSize={this.props.pageSize}
-          currentPage={this.props.currentPage}
-          onChangePageNumber={this.onChangePageNumber}
-          usersList={this.props.usersList}
-          unsubscribe={this.props.unsubscribe}
-          subscribe={this.props.subscribe}
-          subscribingInProgress={this.props.subscribingInProgress}
-        />
-      </>
+    return (
+      <Users
+        totalUsersCount={this.props.totalUsersCount}
+        pageSize={this.props.pageSize}
+        currentPage={this.props.currentPage}
+        onChangePageNumber={this.onChangePageNumber}
+        usersList={this.props.usersList}
+        unsubscribe={this.props.unsubscribe}
+        subscribe={this.props.subscribe}
+        subscribingInProgress={this.props.subscribingInProgress}
+      />
     );
   }
 }
