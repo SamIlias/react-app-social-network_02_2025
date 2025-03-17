@@ -2,14 +2,15 @@ import React from "react";
 import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
+import { Navigate } from "react-router-dom";
 
 const Messages = (props) => {
   const dialogsItems = props.dialogsList.map((d) => (
-    <DialogsItem id={d.id} name={d.name} />
+    <DialogsItem key={d.id} id={d.id} name={d.name} />
   ));
 
   const messagesItems = props.messagesList.map((messageData) => (
-    <MessagesItem itemData={messageData} />
+    <MessagesItem key={messageData.id} itemData={messageData} />
   ));
 
   const newMessageElement = React.createRef();

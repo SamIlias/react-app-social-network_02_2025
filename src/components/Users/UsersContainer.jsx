@@ -45,7 +45,6 @@ class UsersContainer extends React.Component {
           usersList={this.props.usersList}
           unsubscribe={this.props.unsubscribe}
           subscribe={this.props.subscribe}
-          toggleSubscribingInProgress={this.props.toggleSubscribingInProgress}
           subscribingInProgress={this.props.subscribingInProgress}
         />
       </>

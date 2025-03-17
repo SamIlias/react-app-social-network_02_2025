@@ -1,12 +1,12 @@
 import axios from "axios";
-const myToken = "d1b85f17-f896-4ab1-9620-e52c1a1b76de";
+const myToken = "34a1feab-0bed-4233-9752-8d99ab1f4bca";
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.0/",
   withCredentials: true,
   headers: {
-    Authorization: `Bearer ${myToken}`,
-    "API-KEY": "631f98c1-41a5-44ce-b085-2891317a10e6",
+    // Authorization: `Bearer ${myToken}`,
+    // "API-KEY": "631f98c1-41a5-44ce-b085-2891317a10e6",
   },
 });
 
@@ -17,6 +17,12 @@ export const usersAPI = {
       .then((response) => {
         return response.data;
       });
+  },
+
+  async getProfile(userId) {
+    return instance.get(`profile/${userId}`).then((response) => {
+      return response.data;
+    });
   },
 
   async subscribeToUser(userId) {

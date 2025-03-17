@@ -47,13 +47,6 @@ const Users = (props) => {
                 disabled={props.subscribingInProgress.some((id) => id === u.id)}
                 onClick={() => {
                   props.unsubscribe(u.id);
-                  // props.toggleSubscribingInProgress(true, u.id);
-                  // usersAPI.unsubscribeFromUser(u.id).then((data) => {
-                  //   if (data.resultCode === 0) {
-                  //     props.unsubscribe(u.id);
-                  //   }
-                  //   props.toggleSubscribingInProgress(false, u.id);
-                  // });
                 }}
                 className={styles.subscribeButton}
               >
@@ -64,13 +57,6 @@ const Users = (props) => {
                 disabled={props.subscribingInProgress.some((id) => id === u.id)}
                 onClick={() => {
                   props.subscribe(u.id);
-                  // props.toggleSubscribingInProgress(true, u.id);
-                  // usersAPI.subscribeToUser(u.id).then((data) => {
-                  //   if (data.resultCode === 0) {
-                  //     props.subscribe(u.id);
-                  //   }
-                  //   props.toggleSubscribingInProgress(false, u.id);
-                  // });
                 }}
                 className={styles.subscribeButton}
               >

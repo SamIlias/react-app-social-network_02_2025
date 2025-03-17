@@ -6,15 +6,6 @@ import { connect } from "react-redux";
 class HeaderContainer extends React.Component {
   componentDidMount() {
     this.props.passAuthorization();
-    // this.props.toggleIsFetching(true);
-    //
-    // authAPI.getAuthData().then((data) => {
-    //   this.props.toggleIsFetching(false);
-    //   if (data.resultCode === 0) {
-    //     const { id, login, email } = data.data;
-    //     this.props.setUserAuthData(id, login, email);
-    //   }
-    // });
   }
 
   render() {

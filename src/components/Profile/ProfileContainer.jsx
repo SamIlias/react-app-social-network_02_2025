@@ -3,25 +3,24 @@ import Profile from "./Profile";
 import {
   addPost,
   updateNewPostText,
-  setUserProfile,
+  setUserProfileThunkCreator,
 } from "../../redux/profile-reducer";
-// import { withRouter } from "";
-import axios from "axios";
 import { connect } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 
-const profileURL = "https://social-network.samuraijs.com/api/1.0/profile/";
-
-const ProfileContainer = ({ profile, setUserProfile, ...props }) => {
+const ProfileContainer = ({
+  profile,
+  setUserProfileThunkCreator,
+  ...props
+}) => {
   const { userId } = useParams(); // Get userId from URL
 
   useEffect(() => {
     let id = userId || 32241;
-    axios.get(`${profileURL}${id}`).then((response) => {
-      setUserProfile(response.data);
-    });
-  }, [userId, setUserProfile]);
+    setUserProfileThunkCreator(id);
+  }, [userId, setUserProfileThunkCreator]);
 
   return <Profile {...props} profile={profile} />;
 };
@@ -32,10 +31,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const WithUrlDataContainerComponent = withRouter(ProfileContainer);
-
-export default connect(mapStateToProps, {
-  addPost,
-  updateNewPostText,
-  setUserProfile,
-})(ProfileContainer);
+export default withAuthRedirect(
+  connect(mapStateToProps, {
+    addPost,
+    updateNewPostText,
+    setUserProfileThunkCreator,
+  })(ProfileContainer),
+);
