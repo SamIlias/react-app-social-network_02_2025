@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 const ProfileContainer = ({
   profile,
@@ -31,10 +32,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withAuthRedirect(
+export default compose(
+  // withAuthRedirect,
   connect(mapStateToProps, {
     addPost,
     updateNewPostText,
     setUserProfileThunkCreator,
-  })(ProfileContainer),
-);
+  }),
+)(ProfileContainer);
