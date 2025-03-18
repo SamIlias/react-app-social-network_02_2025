@@ -20,9 +20,8 @@ export const usersAPI = {
   },
 
   async getProfile(userId) {
-    return instance.get(`profile/${userId}`).then((response) => {
-      return response.data;
-    });
+    console.warn("Obsolete method. Use userProfileAPI object.");
+    return userProfileAPI.getProfile(userId);
   },
 
   async subscribeToUser(userId) {
@@ -35,6 +34,28 @@ export const usersAPI = {
     return instance.delete(`follow/${userId}`).then((response) => {
       return response.data;
     });
+  },
+};
+
+export const userProfileAPI = {
+  async getProfile(userId) {
+    return instance.get(`profile/${userId}`).then((response) => {
+      return response.data;
+    });
+  },
+
+  async getStatus(userId) {
+    return instance.get(`profile/status/${userId}`).then((response) => {
+      return response.data;
+    });
+  },
+
+  async updateStatus(status) {
+    return instance
+      .put(`profile/status`, { status: status })
+      .then((response) => {
+        return response.data;
+      });
   },
 };
 

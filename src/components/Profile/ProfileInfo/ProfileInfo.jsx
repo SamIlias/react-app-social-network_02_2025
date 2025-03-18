@@ -36,7 +36,10 @@ const ProfileInfo = (props) => {
             <span>Nothing about</span>
           )}
         </div>
-        <ProfileStatus status="Here user status!" />
+        <ProfileStatus
+          status={props.status}
+          updateUserStatus={props.updateUserStatus}
+        />
 
         <hr />
       </div>
