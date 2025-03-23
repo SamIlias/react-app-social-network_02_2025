@@ -1,10 +1,11 @@
 import React from "react";
 import Header from "./Header";
-import { passAuthorization } from "../../redux/auth-reducer";
+import { logout, passAuthorization } from "../../redux/auth-reducer";
 import { connect } from "react-redux";
 
 class HeaderContainer extends React.Component {
   componentDidMount() {
+    debugger;
     this.props.passAuthorization();
   }
 
@@ -16,6 +17,7 @@ class HeaderContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     isAuth: state.auth.isAuth,
+    userId: state.auth.userId,
     login: state.auth.login,
     isFetching: state.auth.isFetching,
   };
@@ -23,4 +25,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   passAuthorization,
+  logout,
 })(HeaderContainer);

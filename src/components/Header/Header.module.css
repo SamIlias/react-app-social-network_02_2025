@@ -11,6 +11,11 @@
   padding: 10px;
 }
 
+.header button {
+  vertical-align: super;
+  padding: 10px;
+}
+
 .header img {
   width: 80px;
   border-radius: 80px;

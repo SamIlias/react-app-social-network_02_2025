@@ -2,7 +2,14 @@ import React from "react";
 import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
-import { Navigate } from "react-router-dom";
+import { Field, reduxForm } from "redux-form";
+import {
+  maxLengthValidatorCrerator,
+  requared,
+} from "../../utils/validators.js";
+import { Textarea } from "../common/FormControl/FormControl.js";
+
+const maxLength15 = maxLengthValidatorCrerator(15);
 
 const Messages = (props) => {
   const dialogsItems = props.dialogsList.map((d) => (
@@ -13,15 +20,8 @@ const Messages = (props) => {
     <MessagesItem key={messageData.id} itemData={messageData} />
   ));
 
-  const newMessageElement = React.createRef();
-
-  const sendMessage = () => {
-    props.sendMessage();
-  };
-
-  const onChangeMessage = (e) => {
-    const messageText = e.target.value;
-    props.updateNewMessageText(messageText);
+  const sendMessage = (values) => {
+    props.sendMessage(values.newMessageText);
   };
 
   return (
@@ -29,23 +29,31 @@ const Messages = (props) => {
       <div className={style.dialogsItems}>{dialogsItems}</div>
       <div>
         <div className={style.messages}>{messagesItems}</div>
-        <div>
-          <textarea
-            className={style.textarea}
-            ref={newMessageElement}
-            onChange={onChangeMessage}
-            value={props.newMessageText}
-            placeholder="Write your message here..."
-          ></textarea>
-        </div>
-        <div>
-          <button className={style.button} onClick={sendMessage}>
-            Send message
-          </button>
-        </div>
+        <AddMessageReduxForm onSubmit={sendMessage} />
       </div>
     </div>
   );
 };
+
+const AddMessageForm = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        <Field
+          className={style.textarea}
+          component={Textarea}
+          validate={[requared, maxLength15]}
+          name="newMessageText"
+          placeholder="Write your message here..."
+        />
+      </div>
+      <div>
+        <button className={style.button}>Send message</button>
+      </div>
+    </form>
+  );
+};
+
+const AddMessageReduxForm = reduxForm({ form: "addMessage" })(AddMessageForm);
 
 export default Messages;

@@ -1,13 +1,11 @@
 import axios from "axios";
-const myToken = "34a1feab-0bed-4233-9752-8d99ab1f4bca";
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.0/",
   withCredentials: true,
-  headers: {
-    Authorization: `Bearer ${myToken}`,
-    // "API-KEY": "631f98c1-41a5-44ce-b085-2891317a10e6",
-  },
+  // headers: {
+  //   "API-KEY": "f76d54d9-5cfb-4436-85d2-0dd64acd06d6",
+  // },
 });
 
 export const usersAPI = {
@@ -60,8 +58,28 @@ export const userProfileAPI = {
 };
 
 export const authAPI = {
-  async getAuthData() {
-    return instance.get(`auth/me`).then((response) => {
+  async getAuthData(userId, token) {
+    return instance
+      .get(`auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        return response.data;
+      });
+  },
+
+  async login(email, password, rememberMe = false) {
+    return instance
+      .post(`auth/login`, { email, password, rememberMe })
+      .then((response) => {
+        return response.data;
+      });
+  },
+
+  async logout() {
+    return instance.delete(`auth/login`).then((response) => {
       return response.data;
     });
   },

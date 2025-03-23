@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/api";
 
 const SET_USER_AUTH_DATA = "SET_USER_AUTH_DATA";
@@ -15,8 +16,7 @@ const authReducer = (state = initialState, action) => {
     case SET_USER_AUTH_DATA:
       return {
         ...state,
-        ...action.data,
-        isAuth: true,
+        ...action.payload,
       };
     case TOGGLE_IS_FETCHING:
       return {
@@ -28,25 +28,44 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export const setUserAuthData = (userId, login, email) => ({
+export const setUserAuthData = (userId, login, email, isAuth) => ({
   type: SET_USER_AUTH_DATA,
-  data: { userId, login, email },
+  payload: { userId, login, email, isAuth },
 });
 
 export const toggleIsFetching = () => ({ type: TOGGLE_IS_FETCHING });
 
-export const passAuthorization = () => {
+export const passAuthorization = (userId, token) => {
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
 
-    authAPI.getAuthData().then((data) => {
+    authAPI.getAuthData(userId, token).then((data) => {
       dispatch(toggleIsFetching(false));
       if (data.resultCode === 0) {
         const { id, login, email } = data.data;
-        dispatch(setUserAuthData(id, login, email));
+        dispatch(setUserAuthData(id, login, email, true));
       }
     });
   };
+};
+
+export const login = (email, password, rememberMe) => (dispatch) => {
+  authAPI.login(email, password, rememberMe).then((data) => {
+    if (data.resultCode === 0) {
+      dispatch(passAuthorization(data.data.userId, data.data.token));
+    } else {
+      const error = data.messages[0];
+      dispatch(stopSubmit("loginForm", { _error: error }));
+    }
+  });
+};
+
+export const logout = () => (dispatch) => {
+  authAPI.logout().then((data) => {
+    if (data.resultCode === 0) {
+      dispatch(setUserAuthData(null, null, null, false));
+    }
+  });
 };
 
 export default authReducer;

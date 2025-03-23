@@ -2,15 +2,10 @@ import blueCircle from "../assets/images/blueCircle.png";
 import messageAvaOrange from "../assets/images/messageAvaOrange.png";
 
 const SEND_MESSAGE = "SEND-MESSAGE";
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
 
-export const sendMessageActionCreator = (text) => ({
+export const sendMessageActionCreator = (newMessageText) => ({
   type: SEND_MESSAGE,
-  text: text,
-});
-export const updateNewMessageTextActionCreator = (text) => ({
-  type: UPDATE_NEW_MESSAGE_TEXT,
-  text: text,
+  newMessageText: newMessageText,
 });
 
 const initialState = {
@@ -21,7 +16,6 @@ const initialState = {
     { id: 4, name: "Victor" },
     { id: 5, name: "Bro" },
   ],
-  newMessageText: "",
   messagesList: [
     {
       id: 1,
@@ -41,28 +35,22 @@ const initialState = {
   ],
 };
 
-const setID = (seed) => seed.length + 1;
+const generateID = (seed) => seed.length + 1;
 
 const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_NEW_MESSAGE_TEXT:
-      return {
-        ...state,
-        newMessageText: action.text,
-      };
     case SEND_MESSAGE:
-      if (!state.newMessageText) {
+      if (!action.newMessageText) {
         return state;
       }
       const newMessage = {
-        id: setID(state.messagesList),
-        message: state.newMessageText,
+        id: generateID(state.messagesList),
+        message: action.newMessageText,
         image: messageAvaOrange,
       };
       return {
         ...state,
         messagesList: [...state.messagesList, newMessage],
-        newMessageText: "",
       };
     default:
       return state;
