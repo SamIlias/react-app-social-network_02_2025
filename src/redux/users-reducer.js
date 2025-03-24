@@ -100,7 +100,7 @@ export const toggleSubscribingInProgress = (isFetching, userId) => ({
 });
 
 //getUsersThunkCreator
-export const getUsers = (currentPage, pageSize) => {
+export const requestUsers = (currentPage, pageSize) => {
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
     usersAPI.getUsers(currentPage, pageSize).then((data) => {
@@ -111,10 +111,10 @@ export const getUsers = (currentPage, pageSize) => {
   };
 };
 
-export const unsubscribe = (userId) => {
+export const unsubscribe = (userId, token) => {
   return (dispatch) => {
     dispatch(toggleSubscribingInProgress(true, userId));
-    usersAPI.unsubscribeFromUser(userId).then((data) => {
+    usersAPI.unsubscribeFromUser(userId, token).then((data) => {
       if (data.resultCode === 0) {
         dispatch(unsubscribeSuccess(userId));
       }
@@ -123,10 +123,10 @@ export const unsubscribe = (userId) => {
   };
 };
 
-export const subscribe = (userId) => {
+export const subscribe = (userId, token) => {
   return (dispatch) => {
     dispatch(toggleSubscribingInProgress(true, userId));
-    usersAPI.subscribeToUser(userId).then((data) => {
+    usersAPI.subscribeToUser(userId, token).then((data) => {
       if (data.resultCode === 0) {
         dispatch(subscribeSuccess(userId));
       }

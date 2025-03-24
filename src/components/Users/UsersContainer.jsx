@@ -7,25 +7,34 @@ import {
   subscribe,
   unsubscribe,
   setCurrentPage,
-  getUsers,
+  requestUsers,
 } from "../../redux/users-reducer";
-import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import {
+  getUsers,
+  getTotalUsersCount,
+  getPageSize,
+  getCurrentPage,
+  getIsFetching,
+  getSubscribingInProgress,
+  getToken,
+} from "../../redux/users-selectors";
 
 const mapStateToProps = (state) => {
   return {
-    usersList: state.usersPage.usersList,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    pageSize: state.usersPage.pageSize,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    subscribingInProgress: state.usersPage.subscribingInProgress,
+    usersList: getUsers(state),
+    totalUsersCount: getTotalUsersCount(state),
+    pageSize: getPageSize(state),
+    currentPage: getCurrentPage(state),
+    isFetching: getIsFetching(state),
+    subscribingInProgress: getSubscribingInProgress(state),
+    token: getToken(state),
   };
 };
 
 class UsersContainer extends React.Component {
   componentDidMount() {
-    this.props.getUsers(this.props.currentPage, this.props.pageSize);
+    this.props.requestUsers(this.props.currentPage, this.props.pageSize);
   }
 
   onChangePageNumber = (pageNumber) => {
@@ -33,7 +42,7 @@ class UsersContainer extends React.Component {
       return;
     }
     this.props.setCurrentPage(pageNumber);
-    this.props.getUsers(this.props.currentPage, this.props.pageSize);
+    this.props.requestUsers(this.props.currentPage, this.props.pageSize);
   };
 
   render() {
@@ -51,17 +60,17 @@ class UsersContainer extends React.Component {
         unsubscribe={this.props.unsubscribe}
         subscribe={this.props.subscribe}
         subscribingInProgress={this.props.subscribingInProgress}
+        token={this.props.token}
       />
     );
   }
 }
 
 export default compose(
-  withAuthRedirect,
   connect(mapStateToProps, {
     subscribe,
     unsubscribe,
     setCurrentPage,
-    getUsers,
+    requestUsers,
   }),
 )(UsersContainer);

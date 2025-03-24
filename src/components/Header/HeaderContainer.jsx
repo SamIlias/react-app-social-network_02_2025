@@ -4,11 +4,6 @@ import { logout, passAuthorization } from "../../redux/auth-reducer";
 import { connect } from "react-redux";
 
 class HeaderContainer extends React.Component {
-  componentDidMount() {
-    debugger;
-    this.props.passAuthorization();
-  }
-
   render() {
     return <Header {...this.props} />;
   }

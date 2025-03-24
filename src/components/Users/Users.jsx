@@ -46,7 +46,7 @@ const Users = (props) => {
               <button
                 disabled={props.subscribingInProgress.some((id) => id === u.id)}
                 onClick={() => {
-                  props.unsubscribe(u.id);
+                  props.unsubscribe(u.id, props.token);
                 }}
                 className={styles.subscribeButton}
               >
@@ -56,7 +56,7 @@ const Users = (props) => {
               <button
                 disabled={props.subscribingInProgress.some((id) => id === u.id)}
                 onClick={() => {
-                  props.subscribe(u.id);
+                  props.subscribe(u.id, props.token);
                 }}
                 className={styles.subscribeButton}
               >

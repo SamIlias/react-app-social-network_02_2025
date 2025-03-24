@@ -9,6 +9,7 @@ const initialState = {
   email: null,
   login: null,
   isAuth: false,
+  token: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -28,9 +29,9 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export const setUserAuthData = (userId, login, email, isAuth) => ({
+export const setUserAuthData = (userId, login, email, isAuth, token) => ({
   type: SET_USER_AUTH_DATA,
-  payload: { userId, login, email, isAuth },
+  payload: { userId, login, email, isAuth, token },
 });
 
 export const toggleIsFetching = () => ({ type: TOGGLE_IS_FETCHING });
@@ -43,7 +44,7 @@ export const passAuthorization = (userId, token) => {
       dispatch(toggleIsFetching(false));
       if (data.resultCode === 0) {
         const { id, login, email } = data.data;
-        dispatch(setUserAuthData(id, login, email, true));
+        dispatch(setUserAuthData(id, login, email, true, token));
       }
     });
   };

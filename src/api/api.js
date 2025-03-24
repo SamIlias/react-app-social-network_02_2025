@@ -3,9 +3,9 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.0/",
   withCredentials: true,
-  // headers: {
-  //   "API-KEY": "f76d54d9-5cfb-4436-85d2-0dd64acd06d6",
-  // },
+  headers: {
+    "API-KEY": "f76d54d9-5cfb-4436-85d2-0dd64acd06d6",
+  },
 });
 
 export const usersAPI = {
@@ -22,16 +22,32 @@ export const usersAPI = {
     return userProfileAPI.getProfile(userId);
   },
 
-  async subscribeToUser(userId) {
-    return instance.post(`follow/${userId}`, {}).then((response) => {
-      return response.data;
-    });
+  async subscribeToUser(userId, token) {
+    return instance
+      .post(
+        `follow/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((response) => {
+        return response.data;
+      });
   },
 
-  async unsubscribeFromUser(userId) {
-    return instance.delete(`follow/${userId}`).then((response) => {
-      return response.data;
-    });
+  async unsubscribeFromUser(userId, token) {
+    return instance
+      .delete(`follow/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        return response.data;
+      });
   },
 };
 
