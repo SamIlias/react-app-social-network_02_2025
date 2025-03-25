@@ -76,9 +76,9 @@ export const getUserStatusTC = (id) => {
   };
 };
 
-export const updateUserStatusTC = (status) => {
+export const updateUserStatusTC = (status, token) => {
   return (dispatch) => {
-    userProfileAPI.updateStatus(status).then((data) => {
+    userProfileAPI.updateStatus(status, token).then((data) => {
       if (data.resultCode === 0) {
         dispatch(setUserStatus(status));
       }

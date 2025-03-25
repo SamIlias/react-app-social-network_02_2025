@@ -1,7 +1,8 @@
 import s from "../Profile.module.css";
 import Preloader from "../../common/Preloader";
-import ProfileStatus from "./ProfileStatus";
+// import ProfileStatus from "./ProfileStatus";
 import userPhoto from "../../../assets/images/userPhoto.png";
+import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 
 const ProfileInfo = (props) => {
   if (!props.profile) {
@@ -30,9 +31,10 @@ const ProfileInfo = (props) => {
             <span>Nothing about</span>
           )}
         </div>
-        <ProfileStatus
+        <ProfileStatusWithHooks
           status={props.status}
           updateUserStatus={props.updateUserStatus}
+          token={props.token}
         />
 
         <hr />

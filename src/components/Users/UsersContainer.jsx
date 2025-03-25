@@ -11,18 +11,18 @@ import {
 } from "../../redux/users-reducer";
 import { compose } from "redux";
 import {
-  getUsers,
   getTotalUsersCount,
   getPageSize,
   getCurrentPage,
   getIsFetching,
   getSubscribingInProgress,
   getToken,
+  getUsersSuper,
 } from "../../redux/users-selectors";
 
 const mapStateToProps = (state) => {
   return {
-    usersList: getUsers(state),
+    usersList: getUsersSuper(state),
     totalUsersCount: getTotalUsersCount(state),
     pageSize: getPageSize(state),
     currentPage: getCurrentPage(state),

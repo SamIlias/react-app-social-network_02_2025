@@ -8,6 +8,12 @@ const instance = axios.create({
   },
 });
 
+const setTokenHeader = (token) => ({
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
 export const usersAPI = {
   async getUsers(currentPage, pageSize) {
     return instance
@@ -24,27 +30,16 @@ export const usersAPI = {
 
   async subscribeToUser(userId, token) {
     return instance
-      .post(
-        `follow/${userId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
+      .post(`follow/${userId}`, {}, setTokenHeader(token))
       .then((response) => {
+        debugger;
         return response.data;
       });
   },
 
   async unsubscribeFromUser(userId, token) {
     return instance
-      .delete(`follow/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .delete(`follow/${userId}`, setTokenHeader(token))
       .then((response) => {
         return response.data;
       });
@@ -64,9 +59,9 @@ export const userProfileAPI = {
     });
   },
 
-  async updateStatus(status) {
+  async updateStatus(status, token) {
     return instance
-      .put(`profile/status`, { status: status })
+      .put(`profile/status`, { status: status }, setTokenHeader(token))
       .then((response) => {
         return response.data;
       });
@@ -74,16 +69,10 @@ export const userProfileAPI = {
 };
 
 export const authAPI = {
-  async getAuthData(userId, token) {
-    return instance
-      .get(`auth/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        return response.data;
-      });
+  async getAuthData(token) {
+    return instance.get(`auth/me`, setTokenHeader(token)).then((response) => {
+      return response.data;
+    });
   },
 
   async login(email, password, rememberMe = false) {

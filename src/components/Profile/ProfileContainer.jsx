@@ -18,7 +18,7 @@ const ProfileContainer = (props) => {
     let id = userId || props.authorisedUserId;
     props.getUserProfileThunkCreator(id);
     props.getUserStatusTC(id);
-  }, [userId]);
+  }, [userId, props.authorisedUserId]);
 
   return <Profile {...props} />;
 };
@@ -29,6 +29,7 @@ const mapStateToProps = (state) => {
     status: state.profilePage.status || "Status not specified",
     authorisedUserId: state.auth.userId,
     isAuth: state.auth.isAuth,
+    token: state.auth.token,
   };
 };
 

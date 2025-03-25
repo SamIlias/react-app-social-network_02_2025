@@ -36,11 +36,11 @@ export const setUserAuthData = (userId, login, email, isAuth, token) => ({
 
 export const toggleIsFetching = () => ({ type: TOGGLE_IS_FETCHING });
 
-export const passAuthorization = (userId, token) => {
+export const passAuthorization = (token) => {
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
 
-    authAPI.getAuthData(userId, token).then((data) => {
+    authAPI.getAuthData(token).then((data) => {
       dispatch(toggleIsFetching(false));
       if (data.resultCode === 0) {
         const { id, login, email } = data.data;
@@ -53,7 +53,7 @@ export const passAuthorization = (userId, token) => {
 export const login = (email, password, rememberMe) => (dispatch) => {
   authAPI.login(email, password, rememberMe).then((data) => {
     if (data.resultCode === 0) {
-      dispatch(passAuthorization(data.data.userId, data.data.token));
+      dispatch(passAuthorization(data.data.token));
     } else {
       const error = data.messages[0];
       dispatch(stopSubmit("loginForm", { _error: error }));
