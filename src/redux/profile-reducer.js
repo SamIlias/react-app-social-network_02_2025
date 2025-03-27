@@ -69,27 +69,24 @@ export const setUserStatus = (status) => ({
 });
 
 export const getUserProfileThunkCreator = (id) => {
-  return (dispatch) => {
-    usersAPI.getProfile(id).then((data) => {
-      dispatch(setUserProfile(data));
-    });
+  return async (dispatch) => {
+    const data = await usersAPI.getProfile(id);
+    dispatch(setUserProfile(data));
   };
 };
 
 export const getUserStatusTC = (id) => {
-  return (dispatch) => {
-    userProfileAPI.getStatus(id).then((data) => {
-      dispatch(setUserStatus(data));
-    });
+  return async (dispatch) => {
+    const data = await userProfileAPI.getStatus(id);
+    dispatch(setUserStatus(data));
   };
 };
 
 export const updateUserStatusTC = (status, token) => {
-  return (dispatch) => {
-    userProfileAPI.updateStatus(status, token).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(setUserStatus(status));
-      }
-    });
+  return async (dispatch) => {
+    const data = await userProfileAPI.updateStatus(status, token);
+    if (data.resultCode === 0) {
+      dispatch(setUserStatus(status));
+    }
   };
 };

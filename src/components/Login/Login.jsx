@@ -1,7 +1,7 @@
-import s from "./Login.module.css";
+import styles from "./Login.module.css";
 import errorStyle from "../common/FormControl/FormControl.module.css";
-import { Field, reduxForm } from "redux-form";
-import { Input } from "../common/FormControl/FormControl";
+import { reduxForm } from "redux-form";
+import { createField, Input } from "../common/FormControl/FormControl";
 import { maxLengthValidatorCrerator, requared } from "../../utils/validators";
 import { connect } from "react-redux";
 import { login } from "../../redux/auth-reducer";
@@ -12,39 +12,36 @@ const maxLenght50 = maxLengthValidatorCrerator(50);
 const LoginForm = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
-      <div>
-        <Field
-          className={s.login}
-          placeholder={"Email"}
-          name={"email"}
-          component={Input}
-          validate={[requared, maxLenght50]}
-        />
-      </div>
-      <div>
-        <Field
-          className={s.password}
-          placeholder={"Password"}
-          type={"password"}
-          name={"password"}
-          component={Input}
-          validate={[requared, maxLenght50]}
-        />
-      </div>
+      {createField(styles.field, "email", "Email", Input, [
+        requared,
+        maxLenght50,
+      ])}
+
+      {createField(
+        styles.field,
+        "password",
+        "Password",
+        Input,
+        [requared, maxLenght50],
+        { type: "password" },
+      )}
+
       {props.error && (
         <div className={errorStyle.formSummaryError}>{props.error}</div>
       )}
+
+      {createField(
+        styles.rememberMe,
+        "rememberMe",
+        null,
+        Input,
+        [],
+        { type: "checkbox" },
+        "remember me",
+      )}
+
       <div>
-        <Field
-          className={s.rememberMe}
-          type={"checkbox"}
-          name={"rememberMe"}
-          component={Input}
-        />
-        remeberMe
-      </div>
-      <div>
-        <button className={s.loginButton}>Login</button>
+        <button className={styles.loginButton}>Login</button>
       </div>
     </form>
   );
@@ -52,12 +49,12 @@ const LoginForm = (props) => {
 
 const LoginReduxForm = reduxForm({ form: "loginForm" })(LoginForm);
 
-const Login = (props) => {
+const Login = ({ login, isAuth }) => {
   const onSubmit = (formData) => {
-    props.login(formData.email, formData.password, formData.rememberMe);
+    login(formData.email, formData.password, formData.rememberMe);
   };
 
-  if (props.isAuth) {
+  if (isAuth) {
     return <Navigate to="/profile" />;
   }
 

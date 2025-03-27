@@ -2,14 +2,7 @@
   float: left;
 }
 
-.login {
-  font-size: 1em;
-  width: 40%;
-  height: 2em;
-  margin: 0 0 5px 0;
-}
-
-.password {
+.field {
   font-size: 1em;
   width: 40%;
   height: 2em;

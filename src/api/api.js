@@ -32,7 +32,6 @@ export const usersAPI = {
     return instance
       .post(`follow/${userId}`, {}, setTokenHeader(token))
       .then((response) => {
-        debugger;
         return response.data;
       });
   },

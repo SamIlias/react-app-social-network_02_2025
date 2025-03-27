@@ -101,37 +101,53 @@ export const toggleSubscribingInProgress = (isFetching, userId) => ({
 
 //getUsersThunkCreator
 export const requestUsers = (currentPage, pageSize) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(toggleIsFetching(true));
-    usersAPI.getUsers(currentPage, pageSize).then((data) => {
-      dispatch(toggleIsFetching(false));
-      dispatch(setUsers(data.items));
-      dispatch(setTotalUsersCount(data.totalCount));
-    });
+
+    const data = await usersAPI.getUsers(currentPage, pageSize);
+
+    dispatch(toggleIsFetching(false));
+    dispatch(setUsers(data.items));
+    dispatch(setTotalUsersCount(data.totalCount));
   };
 };
 
+const subscribeUnsubscribeFlow = async (
+  dispatch,
+  userId,
+  apiMethod,
+  actionCreator,
+  token,
+) => {
+  dispatch(toggleSubscribingInProgress(true, userId));
+  const data = await apiMethod(userId, token);
+  if (data.resultCode === 0) {
+    dispatch(actionCreator(userId));
+  }
+  dispatch(toggleSubscribingInProgress(false, userId));
+};
+
 export const unsubscribe = (userId, token) => {
-  return (dispatch) => {
-    dispatch(toggleSubscribingInProgress(true, userId));
-    usersAPI.unsubscribeFromUser(userId, token).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(unsubscribeSuccess(userId));
-      }
-      dispatch(toggleSubscribingInProgress(false, userId));
-    });
+  return async (dispatch) => {
+    subscribeUnsubscribeFlow(
+      dispatch,
+      userId,
+      usersAPI.unsubscribeFromUser,
+      unsubscribeSuccess,
+      token,
+    );
   };
 };
 
 export const subscribe = (userId, token) => {
-  return (dispatch) => {
-    dispatch(toggleSubscribingInProgress(true, userId));
-    usersAPI.subscribeToUser(userId, token).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(subscribeSuccess(userId));
-      }
-      dispatch(toggleSubscribingInProgress(false, userId));
-    });
+  return async (dispatch) => {
+    subscribeUnsubscribeFlow(
+      dispatch,
+      userId,
+      usersAPI.subscribeToUser,
+      subscribeSuccess,
+      token,
+    );
   };
 };
 

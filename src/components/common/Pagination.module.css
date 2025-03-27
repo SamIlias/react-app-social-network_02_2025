@@ -1,0 +1,9 @@
+.selectedPage {
+  font-weight: bold;
+  color: gold;
+}
+
+.pageNumbers span {
+  font-size: 25px;
+  margin: 7px;
+}
