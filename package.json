@@ -2,7 +2,7 @@
   "name": "react-first-project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/SamIlias/react-app-social-network_02_2025",
+  "homepage": "https://samilias.github.io/react-app-social-network_02_2025/",
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
     "@testing-library/dom": "^10.4.0",
