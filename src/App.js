@@ -1,21 +1,29 @@
 import "./App.css";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LeftbarContainer from "./components/LeftBar/LeftBarContainer";
-import ProfileContainer from "./components/Profile/ProfileContainer";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import MessagesContainer from "./components/Messages/MessagesContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
+import { withSuspense } from "./hoc/withSuspense";
+// import ProfileContainer from "./components/Profile/ProfileContainer";
+// import MessagesContainer from "./components/Messages/MessagesContainer";
+const MessagesContainer = lazy(
+  () => import("./components/Messages/MessagesContainer"),
+);
+const ProfileContainer = lazy(
+  () => import("./components/Profile/ProfileContainer"),
+);
+
 // import Preloader from "./components/common/Preloader";
 
-class App extends React.Component {
+export class myApp extends React.Component {
   // componentDidMount() {
   //   this.props.initializeApp();
   // }
@@ -31,9 +39,15 @@ class App extends React.Component {
         <LeftbarContainer />
         <div className="app-wrapper-content">
           <Routes>
-            <Route path="/profile/:userId?" element={<ProfileContainer />} />
+            <Route
+              path="/profile/:userId?"
+              element={withSuspense(ProfileContainer)}
+            />
             <Route path="/users" element={<UsersContainer />} />
-            <Route path="/messages/*" element={<MessagesContainer />} />
+            <Route
+              path="/messages/*"
+              element={withSuspense(MessagesContainer)}
+            />
             <Route path="/news" element={<News />} />
             <Route path="/music" element={<Music />} />
             <Route path="/settings" element={<Settings />} />
@@ -49,4 +63,4 @@ const mapStateToProps = (state) => ({
   initialised: state.app.initialised,
 });
 
-export default compose(connect(mapStateToProps, { initializeApp })(App));
+export default compose(connect(mapStateToProps, { initializeApp })(myApp));
