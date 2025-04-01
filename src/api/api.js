@@ -8,11 +8,20 @@ const instance = axios.create({
   },
 });
 
-const setTokenHeader = (token) => ({
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+const setHeaders = (token, contentType) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": contentType,
+    },
+  };
+};
+
+// const setTokenHeader = (token) => ({
+//   headers: {
+//     Authorization: `Bearer ${token}`,
+//   },
+// });
 
 export const usersAPI = {
   async getUsers(currentPage, pageSize) {
@@ -30,7 +39,7 @@ export const usersAPI = {
 
   async subscribeToUser(userId, token) {
     return instance
-      .post(`follow/${userId}`, {}, setTokenHeader(token))
+      .post(`follow/${userId}`, {}, setHeaders(token))
       .then((response) => {
         return response.data;
       });
@@ -38,7 +47,7 @@ export const usersAPI = {
 
   async unsubscribeFromUser(userId, token) {
     return instance
-      .delete(`follow/${userId}`, setTokenHeader(token))
+      .delete(`follow/${userId}`, setHeaders(token))
       .then((response) => {
         return response.data;
       });
@@ -60,7 +69,27 @@ export const userProfileAPI = {
 
   async updateStatus(status, token) {
     return instance
-      .put(`profile/status`, { status: status }, setTokenHeader(token))
+      .put(`profile/status`, { status: status }, setHeaders(token))
+      .then((response) => {
+        return response.data;
+      });
+  },
+
+  async saveProfilePhoto(image, token) {
+    return instance
+      .put(
+        `profile/photo`,
+        { image: image },
+        setHeaders(token, "multipart/form-data"),
+      )
+      .then((response) => {
+        return response.data;
+      });
+  },
+
+  async saveProfile(profile, token) {
+    return instance
+      .put(`profile`, profile, setHeaders(token))
       .then((response) => {
         return response.data;
       });
@@ -69,14 +98,14 @@ export const userProfileAPI = {
 
 export const authAPI = {
   async getAuthData(token) {
-    return instance.get(`auth/me`, setTokenHeader(token)).then((response) => {
+    return instance.get(`auth/me`, setHeaders(token)).then((response) => {
       return response.data;
     });
   },
 
-  async login(email, password, rememberMe = false) {
+  async login(email, password, rememberMe = false, captcha = null) {
     return instance
-      .post(`auth/login`, { email, password, rememberMe })
+      .post(`auth/login`, { email, password, rememberMe, captcha })
       .then((response) => {
         return response.data;
       });
@@ -86,5 +115,13 @@ export const authAPI = {
     return instance.delete(`auth/login`).then((response) => {
       return response.data;
     });
+  },
+};
+
+export const securityAPI = {
+  async getCaptchaUrl(token) {
+    return instance
+      .get("/security/get-captcha-url", setHeaders(token))
+      .then((response) => response.data);
   },
 };

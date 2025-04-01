@@ -9,15 +9,16 @@ const Pagination = ({
   portionSize = 10,
 }) => {
   const pagesCount = Math.ceil(totalItemsCount / pageSize);
-  // const pagesCount = 10;
   const pages = [];
 
   for (let i = 1; i <= pagesCount; i += 1) {
     pages.push(i);
   }
 
+  const currentPortionNumber = Math.ceil(currentPage / portionSize);
+
   const portionsCount = totalItemsCount / portionSize;
-  const [portionNumber, setPortionNumber] = useState(1);
+  const [portionNumber, setPortionNumber] = useState(currentPortionNumber);
   const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
   const rightPortionPageNumber = portionNumber * portionSize;
 
@@ -35,6 +36,7 @@ const Pagination = ({
         .map((p) => {
           return (
             <span
+              key={p}
               className={currentPage === p ? styles.selectedPage : ""}
               onClick={() => {
                 onChangePageNumber(p);

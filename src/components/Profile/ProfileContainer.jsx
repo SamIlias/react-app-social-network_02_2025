@@ -4,6 +4,8 @@ import {
   getUserProfileThunkCreator,
   getUserStatusTC,
   updateUserStatusTC,
+  saveProfilePhoto,
+  saveProfile,
 } from "../../redux/profile-reducer";
 import { connect } from "react-redux";
 import { useEffect } from "react";
@@ -20,7 +22,17 @@ const ProfileContainer = (props) => {
     props.getUserStatusTC(id);
   }, [userId, props.authorisedUserId]);
 
-  return <Profile {...props} />;
+  return (
+    <Profile
+      isOwner={!userId}
+      profile={props.profile}
+      status={props.status}
+      token={props.token}
+      updateUserStatus={props.updateUserStatusTC}
+      savePhoto={props.saveProfilePhoto}
+      saveProfile={props.saveProfile}
+    />
+  );
 };
 
 const mapStateToProps = (state) => {
@@ -39,5 +51,7 @@ export default compose(
     getUserProfileThunkCreator,
     getUserStatusTC,
     updateUserStatusTC,
+    saveProfilePhoto,
+    saveProfile,
   }),
 )(ProfileContainer);

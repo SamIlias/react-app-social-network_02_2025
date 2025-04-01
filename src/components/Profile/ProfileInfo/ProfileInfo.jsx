@@ -1,44 +1,57 @@
-import s from "../Profile.module.css";
 import Preloader from "../../common/Preloader";
-// import ProfileStatus from "./ProfileStatus";
-import userPhoto from "../../../assets/images/userPhoto.png";
-import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
+import { useState } from "react";
+import ProfileDataReduxForm from "./ProfileDataForm";
+import ProfileData from "./ProfileData";
 
-const ProfileInfo = (props) => {
-  if (!props.profile) {
+const ProfileInfo = ({
+  profile,
+  status,
+  token,
+  updateUserStatus,
+  isOwner,
+  savePhoto,
+  saveProfile,
+}) => {
+  const [editMode, setEditMode] = useState(false);
+
+  if (!profile) {
     return <Preloader />;
   }
 
+  const onPhotoSelected = (e) => {
+    savePhoto(e.target.files[0], token);
+  };
+
+  const onSubmit = (formData) => {
+    saveProfile(formData, token, () => {
+      setEditMode(false);
+    });
+  };
+
   return (
-    <div className={s.profileInfo}>
-      <div className={s.description}>
-        <div className={s.name}>
-          <span>{props.profile.fullName}</span>
-        </div>
-
-        <div className={s.avatar}>
-          {props.profile.photos.large ? (
-            <img src={props.profile.photos.large} alt="" />
-          ) : (
-            <img src={userPhoto} alt="" />
-          )}
-        </div>
-
-        <div className={s.userDescription}>
-          {props.profile.aboutMe ? (
-            <span>{`About: ${props.profile.aboutMe}`}</span>
-          ) : (
-            <span>Nothing about</span>
-          )}
-        </div>
-        <ProfileStatusWithHooks
-          status={props.status}
-          updateUserStatus={props.updateUserStatus}
-          token={props.token}
+    <div>
+      {editMode ? (
+        <ProfileDataReduxForm
+          initialValues={profile}
+          profile={profile}
+          status={status}
+          token={token}
+          updateUserStatus={updateUserStatus}
+          isOwner={isOwner}
+          onSubmit={onSubmit}
+          onPhotoSelected={onPhotoSelected}
         />
-
-        <hr />
-      </div>
+      ) : (
+        <ProfileData
+          profile={profile}
+          status={status}
+          token={token}
+          updateUserStatus={updateUserStatus}
+          isOwner={isOwner}
+          goToEditMode={() => setEditMode(true)}
+          onPhotoSelected={onPhotoSelected}
+        />
+      )}
     </div>
   );
 };

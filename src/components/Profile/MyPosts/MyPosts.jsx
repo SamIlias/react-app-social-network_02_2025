@@ -10,7 +10,9 @@ import { Textarea } from "../../common/FormControl/FormControl.js";
 const maxLength15 = maxLengthValidatorCrerator(15);
 
 const MyPosts = (props) => {
-  const posts = props.posts.map((post) => <Post postText={post.text} />);
+  const posts = props.posts.map((post) => (
+    <Post key={post.id} postText={post.text} /> //todo add post.id
+  ));
 
   const addPost = (values) => {
     props.addPost(values.newPostText);

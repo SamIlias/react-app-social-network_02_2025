@@ -42,7 +42,7 @@ class UsersContainer extends React.Component {
       return;
     }
     this.props.setCurrentPage(pageNumber);
-    this.props.requestUsers(this.props.currentPage, this.props.pageSize);
+    this.props.requestUsers(pageNumber, this.props.pageSize);
   };
 
   render() {

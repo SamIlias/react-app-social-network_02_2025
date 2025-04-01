@@ -27,13 +27,15 @@ const Users = ({
       />
 
       {props.usersList.map((u) => (
-        <User
-          user={u}
-          subscribingInProgress={subscribingInProgress}
-          unsubscribe={unsubscribe}
-          subscribe={subscribe}
-          token={token}
-        />
+        <div key={u.id}>
+          <User
+            user={u}
+            subscribingInProgress={subscribingInProgress}
+            unsubscribe={unsubscribe}
+            subscribe={subscribe}
+            token={token}
+          />
+        </div>
       ))}
     </div>
   );

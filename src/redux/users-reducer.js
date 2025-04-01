@@ -23,7 +23,7 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         usersList: state.usersList.map((u) => {
-          if (u.id === action.userID) {
+          if (u.id === action.userId) {
             return { ...u, followed: true };
           }
           return u;
@@ -34,7 +34,7 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         usersList: state.usersList.map((u) => {
-          if (u.id === action.userID) {
+          if (u.id === action.userId) {
             return { ...u, followed: false };
           }
           return u;
@@ -78,8 +78,8 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
-export const subscribeSuccess = (userID) => ({ type: SUBSCRIBE, userID });
-export const unsubscribeSuccess = (userID) => ({ type: UNSUBSCRIBE, userID });
+export const subscribeSuccess = (userId) => ({ type: SUBSCRIBE, userId });
+export const unsubscribeSuccess = (userId) => ({ type: UNSUBSCRIBE, userId });
 export const setUsers = (usersList) => ({ type: SET_USERS, usersList });
 export const setCurrentPage = (pageNum) => ({
   type: SET_CURRENT_PAGE,
@@ -128,7 +128,8 @@ const subscribeUnsubscribeFlow = async (
 };
 
 export const unsubscribe = (userId, token) => {
-  return async (dispatch) => {
+  debugger;
+  return (dispatch) => {
     subscribeUnsubscribeFlow(
       dispatch,
       userId,
@@ -140,7 +141,7 @@ export const unsubscribe = (userId, token) => {
 };
 
 export const subscribe = (userId, token) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     subscribeUnsubscribeFlow(
       dispatch,
       userId,

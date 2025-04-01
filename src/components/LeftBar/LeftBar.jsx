@@ -6,7 +6,7 @@ const Leftbar = ({ items }) => {
     const path = el.toLowerCase();
 
     return (
-      <div className={s.item}>
+      <div key={el} className={s.item}>
         <NavLink
           to={`/${path}`}
           className={({ isActive }) => (isActive ? s.activeLink : "")}

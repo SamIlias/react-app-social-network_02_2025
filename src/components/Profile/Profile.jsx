@@ -2,14 +2,25 @@ import style from "./Profile.module.css";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 
-const Profile = (props) => {
+const Profile = ({
+  isOwner,
+  profile,
+  status,
+  updateUserStatus,
+  token,
+  savePhoto,
+  saveProfile,
+}) => {
   return (
     <div className={style.mainContent}>
       <ProfileInfo
-        profile={props.profile}
-        status={props.status}
-        updateUserStatus={props.updateUserStatusTC}
-        token={props.token}
+        isOwner={isOwner}
+        profile={profile}
+        status={status}
+        updateUserStatus={updateUserStatus}
+        token={token}
+        savePhoto={savePhoto}
+        saveProfile={saveProfile}
       />
       <MyPostsContainer />
     </div>

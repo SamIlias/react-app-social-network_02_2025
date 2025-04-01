@@ -11,21 +11,53 @@
 .description {
   padding: 20px;
   font-size: 25px;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .userDescription span {
   color: white;
+  font-weight: bold;
 }
 
-.name span {
+.name {
   color: #4f020d;
+  font-weight: bold;
 }
 
-.ava {}
+.editProfile {
+  float: right;
+  background-color: brown;
+  color: gold;
+  font-size: 25px;
+}
+
+.saveChanges {
+  float: right;
+  background-color: brown;
+  display: block;
+  color: gold;
+  font-size: 25px;
+}
+
+.profileStatus {
+  font-size: 30px;
+  font-weight: bold;
+}
 
 .profileStatus input {
   font-size: 20px;
   height: 20px;
   width: 50%;
+  font-weight: bold;
+}
+
+.formField {
+  width: 40%;
+  height: 10%;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.contacts {
+  margin-left: 20px;
 }

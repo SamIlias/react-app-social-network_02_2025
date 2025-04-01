@@ -1,9 +1,10 @@
+import { stopSubmit } from "redux-form";
 import { usersAPI, userProfileAPI } from "../api/api";
-
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE_POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_USER_STATUS = "SET_USER_STATUS";
+const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
 
 const generateId = (seed) => {
   return seed.length + 1;
@@ -15,6 +16,7 @@ const initialState = {
     { id: 2, text: "Yo! It is cool!" },
   ],
   profile: null,
+  photo: null,
   status: "---------------",
 };
 
@@ -43,6 +45,11 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         status: action.status,
       };
+    case SAVE_PHOTO_SUCCESS:
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      };
     case DELETE_POST:
       return {
         ...state,
@@ -58,6 +65,11 @@ export default profileReducer;
 export const addPost = (newPostText) => ({ type: ADD_POST, newPostText });
 
 export const deletePost = (postId) => ({ type: DELETE_POST, postId });
+
+export const savePhotoSuccess = (photos) => ({
+  type: SAVE_PHOTO_SUCCESS,
+  photos,
+});
 
 export const setUserProfile = (profile) => ({
   type: SET_USER_PROFILE,
@@ -87,6 +99,30 @@ export const updateUserStatusTC = (status, token) => {
     const data = await userProfileAPI.updateStatus(status, token);
     if (data.resultCode === 0) {
       dispatch(setUserStatus(status));
+    }
+  };
+};
+
+export const saveProfilePhoto = (profilePhoto, token) => {
+  return async (dispatch) => {
+    const data = await userProfileAPI.saveProfilePhoto(profilePhoto, token);
+    if (data.resultCode === 0) {
+      dispatch(savePhotoSuccess(data.data.photos));
+    }
+  };
+};
+
+export const saveProfile = (profile, token, callbackSuccess) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+    const data = await userProfileAPI.saveProfile(profile, token);
+    if (data.resultCode === 0) {
+      dispatch(getUserProfileThunkCreator(userId));
+      callbackSuccess();
+    } else {
+      const error = data.messages.length > 0 ? data.messages[0] : "";
+      dispatch(stopSubmit("edit-profile", { _error: error }));
+      // dispatch(stopSubmit("edit-profile", { contacts: { facebook: error } }));
     }
   };
 };

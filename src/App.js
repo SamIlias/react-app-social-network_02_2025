@@ -7,7 +7,7 @@ import Settings from "./components/Settings/Settings";
 import UsersContainer from "./components/Users/UsersContainer";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
-import React, { Suspense, lazy } from "react";
+import React, { lazy } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
@@ -39,6 +39,7 @@ export class myApp extends React.Component {
         <LeftbarContainer />
         <div className="app-wrapper-content">
           <Routes>
+            <Route exact path="/" element={withSuspense(ProfileContainer)} />
             <Route
               path="/profile/:userId?"
               element={withSuspense(ProfileContainer)}
@@ -52,6 +53,7 @@ export class myApp extends React.Component {
             <Route path="/music" element={<Music />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={<Login />} />
+            <Route path="*" element={<div>404 NOT FOUND</div>} />
           </Routes>
         </div>
       </div>
