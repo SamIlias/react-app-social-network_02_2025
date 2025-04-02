@@ -1,16 +1,15 @@
 import s from "./Header.module.css";
-// import Preloader from "../common/Preloader";
 import { NavLink } from "react-router-dom";
 
-const Header = (props) => {
+const Header = ({ isAuth, userName, logout }) => {
   return (
     <header className={s.header}>
       <img src="https://i.redd.it/p2ami7lbck681.jpg" alt="logo" />
-      {props.isAuth ? (
+      {isAuth ? (
         <div className={s.login}>
           <span>
-            <span className={s.userName}>{props.login}</span>
-            <button onClick={props.logout}>Log out</button>
+            <span className={s.userName}>{userName}</span>
+            <button onClick={logout}>Log out</button>
           </span>
         </div>
       ) : (

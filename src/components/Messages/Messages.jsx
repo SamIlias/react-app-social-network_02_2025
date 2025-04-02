@@ -1,27 +1,24 @@
-import React from "react";
 import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
-import { Field, reduxForm } from "redux-form";
-import {
-  maxLengthValidatorCrerator,
-  requared,
-} from "../../utils/validators.js";
+import { Field, reduxForm, reset } from "redux-form";
+import { maxLengthValidatorCreator, requared } from "../../utils/validators.js";
 import { Textarea } from "../common/FormControl/FormControl.js";
 
-const maxLength15 = maxLengthValidatorCrerator(15);
+const ADD_MESSAGE_FORM = "addMessageForm";
+const maxLength15 = maxLengthValidatorCreator(15);
 
-const Messages = (props) => {
-  const dialogsItems = props.dialogsList.map((d) => (
+const Messages = ({ dialogsList, messagesList, sendMessage }) => {
+  const dialogsItems = dialogsList.map((d) => (
     <DialogsItem key={d.id} id={d.id} name={d.name} />
   ));
 
-  const messagesItems = props.messagesList.map((messageData) => (
+  const messagesItems = messagesList.map((messageData) => (
     <MessagesItem key={messageData.id} itemData={messageData} />
   ));
 
-  const sendMessage = (values) => {
-    props.sendMessage(values.newMessageText);
+  const onSubmit = (values) => {
+    sendMessage(values.newMessageText, ADD_MESSAGE_FORM);
   };
 
   return (
@@ -29,15 +26,15 @@ const Messages = (props) => {
       <div className={style.dialogsItems}>{dialogsItems}</div>
       <div>
         <div className={style.messages}>{messagesItems}</div>
-        <AddMessageReduxForm onSubmit={sendMessage} />
+        <AddMessageReduxForm onSubmit={onSubmit} />
       </div>
     </div>
   );
 };
 
-const AddMessageForm = (props) => {
+const AddMessageForm = ({ handleSubmit }) => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div>
         <Field
           className={style.textarea}
@@ -54,6 +51,8 @@ const AddMessageForm = (props) => {
   );
 };
 
-const AddMessageReduxForm = reduxForm({ form: "addMessage" })(AddMessageForm);
+const AddMessageReduxForm = reduxForm({ form: ADD_MESSAGE_FORM })(
+  AddMessageForm,
+);
 
 export default Messages;

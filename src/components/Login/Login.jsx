@@ -2,16 +2,17 @@ import styles from "./Login.module.css";
 import errorStyle from "../common/FormControl/FormControl.module.css";
 import { reduxForm } from "redux-form";
 import { createField, Input } from "../common/FormControl/FormControl";
-import { maxLengthValidatorCrerator, requared } from "../../utils/validators";
+import { maxLengthValidatorCreator, requared } from "../../utils/validators";
 import { connect } from "react-redux";
 import { login } from "../../redux/auth-reducer";
 import { Navigate } from "react-router-dom";
 
-const maxLenght50 = maxLengthValidatorCrerator(50);
+const maxLenght50 = maxLengthValidatorCreator(50);
 
-const LoginForm = (props) => {
+// form -----------------------------------------------------
+const LoginForm = ({ handleSubmit, error, captchaUrl }) => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       {createField(styles.field, "email", "Email", Input, [
         requared,
         maxLenght50,
@@ -26,9 +27,7 @@ const LoginForm = (props) => {
         { type: "password" },
       )}
 
-      {props.error && (
-        <div className={errorStyle.formSummaryError}>{props.error}</div>
-      )}
+      {error && <div className={errorStyle.formSummaryError}>{error}</div>}
 
       {createField(
         styles.rememberMe,
@@ -40,8 +39,8 @@ const LoginForm = (props) => {
         "remember me",
       )}
 
-      {props.captchaUrl && <img src={props.captchaUrl} alt="" />}
-      {props.captchaUrl &&
+      {captchaUrl && <img src={captchaUrl} alt="" />}
+      {captchaUrl &&
         createField(
           styles.field,
           "captchaUrl",
@@ -60,6 +59,7 @@ const LoginForm = (props) => {
 
 const LoginReduxForm = reduxForm({ form: "loginForm" })(LoginForm);
 
+// Login component------------------------------------------------
 const Login = ({ login, isAuth, captchaUrl }) => {
   const onSubmit = (formData) => {
     login(

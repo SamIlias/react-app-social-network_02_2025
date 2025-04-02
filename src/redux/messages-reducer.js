@@ -1,12 +1,7 @@
 import blueCircle from "../assets/images/blueCircle.png";
 import messageAvaOrange from "../assets/images/messageAvaOrange.png";
 
-const SEND_MESSAGE = "SEND-MESSAGE";
-
-export const sendMessageActionCreator = (newMessageText) => ({
-  type: SEND_MESSAGE,
-  newMessageText: newMessageText,
-});
+const SEND_MESSAGE = "samurai/messages/SEND-MESSAGE";
 
 const initialState = {
   dialogsList: [
@@ -58,3 +53,9 @@ const messagesReducer = (state = initialState, action) => {
 };
 
 export default messagesReducer;
+
+// action creators ---------------------------------------------
+export const sendMessageActionCreator = (newMessageText) => ({
+  type: SEND_MESSAGE,
+  newMessageText: newMessageText,
+});

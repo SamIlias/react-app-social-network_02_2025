@@ -4,7 +4,7 @@ export const requared = (value) => {
   return "field is requared";
 };
 
-export const maxLengthValidatorCrerator = (maxLength) => (value) => {
+export const maxLengthValidatorCreator = (maxLength) => (value) => {
   if (value.length > maxLength) return `max length is ${maxLength} symbols`;
   return undefined;
 };

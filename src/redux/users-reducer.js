@@ -1,12 +1,13 @@
 import { usersAPI } from "../api/api";
 
-const SUBSCRIBE = "SUBSCRIBE";
-const UNSUBSCRIBE = "UNSUBSCRIBE";
-const SET_USERS = "SET_USERS";
-const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
-const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
-const TOGGLE_SUBSCRIBING_IN_PROGRESS = "TOGGLE_SUBSCRIBING_IN_PROGRESS";
+const SUBSCRIBE = "samurai/users/SUBSCRIBE";
+const UNSUBSCRIBE = "samurai/users/UNSUBSCRIBE";
+const SET_USERS = "samurai/users/SET_USERS";
+const SET_CURRENT_PAGE = "samurai/users/SET_CURRENT_PAGE";
+const SET_TOTAL_USERS_COUNT = "samurai/users/SET_TOTAL_USERS_COUNT";
+const TOGGLE_IS_FETCHING = "samurai/users/TOGGLE_IS_FETCHING";
+const TOGGLE_SUBSCRIBING_IN_PROGRESS =
+  "samurai/users/TOGGLE_SUBSCRIBING_IN_PROGRESS";
 
 const initialState = {
   usersList: [],
@@ -78,6 +79,10 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
+export default usersReducer;
+
+//action creators ----------------------------------------------
+// export ?????
 export const subscribeSuccess = (userId) => ({ type: SUBSCRIBE, userId });
 export const unsubscribeSuccess = (userId) => ({ type: UNSUBSCRIBE, userId });
 export const setUsers = (usersList) => ({ type: SET_USERS, usersList });
@@ -99,7 +104,7 @@ export const toggleSubscribingInProgress = (isFetching, userId) => ({
   userId,
 });
 
-//getUsersThunkCreator
+// thunk creators -----------------------------------------------
 export const requestUsers = (currentPage, pageSize) => {
   return async (dispatch) => {
     dispatch(toggleIsFetching(true));
@@ -151,5 +156,3 @@ export const subscribe = (userId, token) => {
     );
   };
 };
-
-export default usersReducer;

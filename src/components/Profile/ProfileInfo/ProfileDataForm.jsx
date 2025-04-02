@@ -26,6 +26,7 @@ export const ProfileDataForm = ({
             Save changes
           </button>
         </div>
+
         <div className={s.userDescription}>
           <span>Fullname: </span>
           <span>
@@ -70,6 +71,7 @@ export const ProfileDataForm = ({
             )}
           </span>
         </div>
+
         <div className={s.userDescription}>
           <span> Looking for a job: </span>
           <span>
@@ -84,6 +86,7 @@ export const ProfileDataForm = ({
             )}
           </span>
         </div>
+
         <div className={s.userDescription}>
           <span>My professionals skills:</span>
           <span>
@@ -98,6 +101,7 @@ export const ProfileDataForm = ({
             )}
           </span>
         </div>
+
         <div className={s.userDescription}>
           <span>Contacts:</span>
           {Object.keys(profile.contacts).map((key) => {

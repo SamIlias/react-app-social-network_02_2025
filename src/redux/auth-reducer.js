@@ -32,13 +32,26 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
+export default authReducer;
+
+//action creators ----------------------------------------------
 export const setUserAuthData = (userId, login, email, isAuth, token) => ({
   type: SET_USER_AUTH_DATA,
   payload: { userId, login, email, isAuth, token },
 });
 
-export const toggleIsFetching = () => ({ type: TOGGLE_IS_FETCHING });
+// fixed:
+export const toggleIsFetching = (isFething) => ({
+  type: TOGGLE_IS_FETCHING,
+  isFething,
+});
 
+const getCaptchaUrlSuccess = (captchaUrl) => ({
+  type: GET_CAPTCHA_URL_SUCCESS,
+  payload: { captchaUrl },
+});
+
+// thunk creators --------------------------------------------
 export const passAuthorization = (token) => {
   return async (dispatch) => {
     dispatch(toggleIsFetching(true));
@@ -73,14 +86,7 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-const getCaptchaUrlSuccess = (captchaUrl) => ({
-  type: GET_CAPTCHA_URL_SUCCESS,
-  payload: { captchaUrl },
-});
-
 export const getCaptchaUrl = () => async (dispatch) => {
   const data = await securityAPI.getCaptchaUrl();
   dispatch(getCaptchaUrlSuccess(data.url));
 };
-
-export default authReducer;

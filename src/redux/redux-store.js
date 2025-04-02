@@ -1,13 +1,12 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
 import profileReducer from "./profile-reducer";
 import messagesReducer from "./messages-reducer";
 import leftBarReducer from "./leftBar-reducer";
 import usersReducer from "./users-reducer";
 import authReducer from "./auth-reducer";
+import appReducer from "./app-reducer";
 import { thunk } from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
-import appReducer from "./app-reducer";
-import { compose } from "redux";
+import { compose, combineReducers, createStore, applyMiddleware } from "redux";
 
 const reducers = combineReducers({
   profilePage: profileReducer,

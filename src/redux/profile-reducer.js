@@ -1,10 +1,11 @@
 import { stopSubmit } from "redux-form";
 import { usersAPI, userProfileAPI } from "../api/api";
-const ADD_POST = "ADD-POST";
-const DELETE_POST = "DELETE_POST";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_USER_STATUS = "SET_USER_STATUS";
-const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
+
+const ADD_POST = "samurai/profile/ADD-POST";
+const DELETE_POST = "samurai/profile/DELETE_POST";
+const SET_USER_PROFILE = "samurai/profile/SET_USER_PROFILE";
+const SET_USER_STATUS = "samurai/profile/SET_USER_STATUS";
+const SAVE_PHOTO_SUCCESS = "samurai/profile/SAVE_PHOTO_SUCCESS";
 
 const generateId = (seed) => {
   return seed.length + 1;
@@ -62,15 +63,14 @@ const profileReducer = (state = initialState, action) => {
 
 export default profileReducer;
 
+// action creators ----------------------------------------
+// export ?????
 export const addPost = (newPostText) => ({ type: ADD_POST, newPostText });
-
 export const deletePost = (postId) => ({ type: DELETE_POST, postId });
-
 export const savePhotoSuccess = (photos) => ({
   type: SAVE_PHOTO_SUCCESS,
   photos,
 });
-
 export const setUserProfile = (profile) => ({
   type: SET_USER_PROFILE,
   profile,
@@ -80,6 +80,7 @@ export const setUserStatus = (status) => ({
   status,
 });
 
+// thunk creators -----------------------------------------
 export const getUserProfileThunkCreator = (id) => {
   return async (dispatch) => {
     const data = await usersAPI.getProfile(id);
@@ -120,7 +121,7 @@ export const saveProfile = (profile, token, callbackSuccess) => {
       dispatch(getUserProfileThunkCreator(userId));
       callbackSuccess();
     } else {
-      const error = data.messages.length > 0 ? data.messages[0] : "";
+      const error = data.messages.length > 0 ? data.messages[0] : "some error";
       dispatch(stopSubmit("edit-profile", { _error: error }));
       // dispatch(stopSubmit("edit-profile", { contacts: { facebook: error } }));
     }

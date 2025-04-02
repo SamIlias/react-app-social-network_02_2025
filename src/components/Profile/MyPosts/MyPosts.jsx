@@ -2,34 +2,36 @@ import { Field, reduxForm } from "redux-form";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post.jsx";
 import {
-  maxLengthValidatorCrerator,
+  maxLengthValidatorCreator,
   requared,
 } from "../../../utils/validators.js";
 import { Textarea } from "../../common/FormControl/FormControl.js";
 
-const maxLength15 = maxLengthValidatorCrerator(15);
+const PROFILE_ADD_POST_FORM = "profileAddPost";
 
-const MyPosts = (props) => {
-  const posts = props.posts.map((post) => (
+const maxLength15 = maxLengthValidatorCreator(15);
+
+const MyPosts = ({ posts, addPost }) => {
+  const postsList = posts.map((post) => (
     <Post key={post.id} postText={post.text} /> //todo add post.id
   ));
 
-  const addPost = (values) => {
-    props.addPost(values.newPostText);
+  const onSubmit = (values) => {
+    addPost(values.newPostText, PROFILE_ADD_POST_FORM);
   };
 
   return (
     <div className={s.posts}>
       <h2>My posts</h2>
-      <AddPostReduxForm onSubmit={addPost} />
-      {posts}
+      <AddPostReduxForm onSubmit={onSubmit} />
+      {postsList}
     </div>
   );
 };
 
-const AddPostForm = (props) => {
+const AddPostForm = ({ handleSubmit }) => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div>
         <Field
           component={Textarea}
@@ -46,6 +48,8 @@ const AddPostForm = (props) => {
   );
 };
 
-const AddPostReduxForm = reduxForm({ form: "ProfileAddPost" })(AddPostForm);
+const AddPostReduxForm = reduxForm({ form: PROFILE_ADD_POST_FORM })(
+  AddPostForm,
+);
 
 export default MyPosts;

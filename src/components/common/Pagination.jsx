@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./Pagination.module.css";
+import cn from "classnames";
 
 const Pagination = ({
   totalItemsCount,
@@ -23,7 +24,7 @@ const Pagination = ({
   const rightPortionPageNumber = portionNumber * portionSize;
 
   return (
-    <div className={styles.pageNumbers}>
+    <div className={cn(styles.pageNumbers)}>
       {portionNumber > 1 && (
         <button onClick={() => setPortionNumber(portionNumber - 1)}>
           Prev
@@ -37,7 +38,7 @@ const Pagination = ({
           return (
             <span
               key={p}
-              className={currentPage === p ? styles.selectedPage : ""}
+              className={cn({ [styles.selectedPage]: currentPage === p })}
               onClick={() => {
                 onChangePageNumber(p);
               }}

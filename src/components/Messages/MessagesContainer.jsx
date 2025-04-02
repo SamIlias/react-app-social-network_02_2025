@@ -3,6 +3,7 @@ import { sendMessageActionCreator } from "../../redux/messages-reducer";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import { reset } from "redux-form";
 
 const mapStateToProps = (state) => {
   return {
@@ -14,9 +15,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    sendMessage: (newMessageText) => {
+    sendMessage: (newMessageText, form) => {
       const action = sendMessageActionCreator(newMessageText);
       dispatch(action);
+      dispatch(reset(form));
     },
   };
 };
