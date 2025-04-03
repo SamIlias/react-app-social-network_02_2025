@@ -44,5 +44,4 @@ Launches the test runner in the interactive watch mode.\
 Runs the app in the development mode.\
 
 ## You can also view this project on GitHub Pages:
-
-[https://samilias.github.io/react-app-social-network_02_2025/] (visit Page)
+- [visit Page](https://samilias.github.io/react-app-social-network_02_2025/)
