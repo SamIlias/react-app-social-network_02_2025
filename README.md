@@ -45,4 +45,4 @@ Runs the app in the development mode.\
 
 ## You can also view this project on GitHub Pages:
 
-[ https://samilias.github.io/react-app-social-network_02_2025/ ] visit GitHub Pages
+[https://samilias.github.io/react-app-social-network_02_2025/] (visit Page)
