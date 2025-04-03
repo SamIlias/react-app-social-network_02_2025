@@ -8,7 +8,13 @@ const instance = axios.create({
   },
 });
 
-const setHeaders = (token, contentType) => {
+const contentTypeDefault = "application/json";
+type contentTypeDefaultType = typeof contentTypeDefault;
+
+const setHeaders = (
+  token: string | null,
+  contentType: string | contentTypeDefaultType,
+) => {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -17,14 +23,8 @@ const setHeaders = (token, contentType) => {
   };
 };
 
-// const setTokenHeader = (token) => ({
-//   headers: {
-//     Authorization: `Bearer ${token}`,
-//   },
-// });
-
 export const usersAPI = {
-  async getUsers(currentPage, pageSize) {
+  async getUsers(currentPage: number | null, pageSize: number | null) {
     return instance
       .get(`users/?page=${currentPage}&count=${pageSize}`)
       .then((response) => {
@@ -32,22 +32,22 @@ export const usersAPI = {
       });
   },
 
-  async getProfile(userId) {
+  async getProfile(userId: number | null) {
     console.warn("Obsolete method. Use userProfileAPI object.");
     return userProfileAPI.getProfile(userId);
   },
 
-  async subscribeToUser(userId, token) {
+  async subscribeToUser(userId: number | null, token: string | null) {
     return instance
-      .post(`follow/${userId}`, {}, setHeaders(token))
+      .post(`follow/${userId}`, {}, setHeaders(token, contentTypeDefault))
       .then((response) => {
         return response.data;
       });
   },
 
-  async unsubscribeFromUser(userId, token) {
+  async unsubscribeFromUser(userId: number | null, token: string | null) {
     return instance
-      .delete(`follow/${userId}`, setHeaders(token))
+      .delete(`follow/${userId}`, setHeaders(token, contentTypeDefault))
       .then((response) => {
         return response.data;
       });
@@ -55,27 +55,31 @@ export const usersAPI = {
 };
 
 export const userProfileAPI = {
-  async getProfile(userId) {
+  async getProfile(userId: number | null) {
     return instance.get(`profile/${userId}`).then((response) => {
       return response.data;
     });
   },
 
-  async getStatus(userId) {
+  async getStatus(userId: number | null) {
     return instance.get(`profile/status/${userId}`).then((response) => {
       return response.data;
     });
   },
 
-  async updateStatus(status, token) {
+  async updateStatus(status: string | null, token: string | null) {
     return instance
-      .put(`profile/status`, { status: status }, setHeaders(token))
+      .put(
+        `profile/status`,
+        { status: status },
+        setHeaders(token, contentTypeDefault),
+      )
       .then((response) => {
         return response.data;
       });
   },
 
-  async saveProfilePhoto(image, token) {
+  async saveProfilePhoto(image: string | null, token: string | null) {
     return instance
       .put(
         `profile/photo`,
@@ -87,9 +91,9 @@ export const userProfileAPI = {
       });
   },
 
-  async saveProfile(profile, token) {
+  async saveProfile(profile: any, token: string | null) {
     return instance
-      .put(`profile`, profile, setHeaders(token))
+      .put(`profile`, profile, setHeaders(token, contentTypeDefault))
       .then((response) => {
         return response.data;
       });
@@ -97,13 +101,20 @@ export const userProfileAPI = {
 };
 
 export const authAPI = {
-  async getAuthData(token) {
-    return instance.get(`auth/me`, setHeaders(token)).then((response) => {
-      return response.data;
-    });
+  async getAuthData(token: string | null) {
+    return instance
+      .get(`auth/me`, setHeaders(token, contentTypeDefault))
+      .then((response) => {
+        return response.data;
+      });
   },
 
-  async login(email, password, rememberMe = false, captcha = null) {
+  async login(
+    email: string | null,
+    password: string | null,
+    rememberMe = false,
+    captcha: string | null = null,
+  ) {
     return instance
       .post(`auth/login`, { email, password, rememberMe, captcha })
       .then((response) => {
@@ -119,9 +130,9 @@ export const authAPI = {
 };
 
 export const securityAPI = {
-  async getCaptchaUrl(token) {
+  async getCaptchaUrl() {
     return instance
-      .get("/security/get-captcha-url", setHeaders(token))
+      .get("/security/get-captcha-url")
       .then((response) => response.data);
   },
 };
