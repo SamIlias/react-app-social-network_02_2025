@@ -1,4 +1,5 @@
 import { usersAPI } from "../api/api";
+import { PhotosType } from "./profile-reducer";
 
 const SUBSCRIBE = "samurai/users/SUBSCRIBE";
 const UNSUBSCRIBE = "samurai/users/UNSUBSCRIBE";
@@ -9,16 +10,26 @@ const TOGGLE_IS_FETCHING = "samurai/users/TOGGLE_IS_FETCHING";
 const TOGGLE_SUBSCRIBING_IN_PROGRESS =
   "samurai/users/TOGGLE_SUBSCRIBING_IN_PROGRESS";
 
+type UserType = {
+  id: number;
+  name: string;
+  status: string | null;
+  photos: PhotosType;
+  followed: boolean;
+};
+
 const initialState = {
-  usersList: [],
+  usersList: [] as Array<UserType>,
   totalUsersCount: 0,
   pageSize: 5,
   currentPage: 1,
   isFetching: true,
-  subscribingInProgress: [],
+  subscribingInProgress: [] as Array<number>, // array of users Ids
 };
 
-const usersReducer = (state = initialState, action) => {
+export type InitialState = typeof initialState;
+
+const usersReducer = (state = initialState, action: any): InitialState => {
   switch (action.type) {
     case SUBSCRIBE:
       return {
@@ -83,30 +94,80 @@ export default usersReducer;
 
 //action creators ----------------------------------------------
 // export ?????
-export const subscribeSuccess = (userId) => ({ type: SUBSCRIBE, userId });
-export const unsubscribeSuccess = (userId) => ({ type: UNSUBSCRIBE, userId });
-export const setUsers = (usersList) => ({ type: SET_USERS, usersList });
-export const setCurrentPage = (pageNum) => ({
+type SubscribeSuccessAcionType = {
+  type: typeof SUBSCRIBE;
+  userId: number;
+};
+
+type UnsubscribeSuccessAcionType = {
+  type: typeof UNSUBSCRIBE;
+  userId: number;
+};
+
+type SetUsersAcionType = {
+  type: typeof SET_USERS;
+  usersList: Array<UserType>;
+};
+
+type SetCurrentPageAcionType = {
+  type: typeof SET_CURRENT_PAGE;
+  pageNum: number;
+};
+
+type SetTotalUsersCountAcionType = {
+  type: typeof SET_TOTAL_USERS_COUNT;
+  count: number;
+};
+
+type ToggleIsFetchingAcionType = {
+  type: typeof TOGGLE_IS_FETCHING;
+  isFetching: boolean;
+};
+
+type ToggleSubscribingInProgressAcionType = {
+  type: typeof TOGGLE_SUBSCRIBING_IN_PROGRESS;
+  isFetching: boolean;
+  userId: number;
+};
+
+export const subscribeSuccess = (
+  userId: number,
+): SubscribeSuccessAcionType => ({ type: SUBSCRIBE, userId });
+export const unsubscribeSuccess = (
+  userId: number,
+): UnsubscribeSuccessAcionType => ({ type: UNSUBSCRIBE, userId });
+export const setUsers = (usersList: Array<UserType>): SetUsersAcionType => ({
+  type: SET_USERS,
+  usersList,
+});
+export const setCurrentPage = (pageNum: number): SetCurrentPageAcionType => ({
   type: SET_CURRENT_PAGE,
   pageNum,
 });
-export const setTotalUsersCount = (count) => ({
+export const setTotalUsersCount = (
+  count: number,
+): SetTotalUsersCountAcionType => ({
   type: SET_TOTAL_USERS_COUNT,
   count,
 });
-export const toggleIsFetching = (isFetching) => ({
+export const toggleIsFetching = (
+  isFetching: boolean,
+): ToggleIsFetchingAcionType => ({
   type: TOGGLE_IS_FETCHING,
   isFetching,
 });
-export const toggleSubscribingInProgress = (isFetching, userId) => ({
+export const toggleSubscribingInProgress = (
+  isFetching: boolean,
+  userId: number,
+): ToggleSubscribingInProgressAcionType => ({
   type: TOGGLE_SUBSCRIBING_IN_PROGRESS,
   isFetching,
   userId,
 });
 
 // thunk creators -----------------------------------------------
-export const requestUsers = (currentPage, pageSize) => {
-  return async (dispatch) => {
+export const requestUsers = (currentPage: number, pageSize: number) => {
+  return async (dispatch: any) => {
     dispatch(toggleIsFetching(true));
 
     const data = await usersAPI.getUsers(currentPage, pageSize);
@@ -118,11 +179,11 @@ export const requestUsers = (currentPage, pageSize) => {
 };
 
 const subscribeUnsubscribeFlow = async (
-  dispatch,
-  userId,
-  apiMethod,
-  actionCreator,
-  token,
+  dispatch: any,
+  userId: number,
+  apiMethod: (userId: number, token: string | null) => any,
+  actionCreator: (userId: number) => void,
+  token: string | null,
 ) => {
   dispatch(toggleSubscribingInProgress(true, userId));
   const data = await apiMethod(userId, token);
@@ -132,9 +193,8 @@ const subscribeUnsubscribeFlow = async (
   dispatch(toggleSubscribingInProgress(false, userId));
 };
 
-export const unsubscribe = (userId, token) => {
-  debugger;
-  return (dispatch) => {
+export const unsubscribe = (userId: number, token: string | null) => {
+  return (dispatch: any) => {
     subscribeUnsubscribeFlow(
       dispatch,
       userId,
@@ -145,8 +205,8 @@ export const unsubscribe = (userId, token) => {
   };
 };
 
-export const subscribe = (userId, token) => {
-  return (dispatch) => {
+export const subscribe = (userId: number, token: string | null) => {
+  return (dispatch: any) => {
     subscribeUnsubscribeFlow(
       dispatch,
       userId,

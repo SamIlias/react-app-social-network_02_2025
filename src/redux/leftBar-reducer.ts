@@ -2,7 +2,12 @@ const initialState = {
   items: ["Profile", "Users", "Messages", "News", "Music", "Settings"],
 };
 
-const leftBarReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState;
+
+const leftBarReducer = (
+  state = initialState,
+  action: any,
+): InitialStateType => {
   return state;
 };
 

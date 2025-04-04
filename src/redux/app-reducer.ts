@@ -8,7 +8,9 @@ const initialState = {
   globalError: null,
 };
 
-const appReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState;
+
+const appReducer = (state = initialState, action: any): InitialStateType => {
   switch (action.type) {
     case INITIALIZED_SUCCESS:
       return {
@@ -27,14 +29,25 @@ const appReducer = (state = initialState, action) => {
   }
 };
 
-export const initializedSuccess = () => ({
+type InitializedSuccessActionType = {
+  type: typeof INITIALIZED_SUCCESS;
+};
+
+export const initializedSuccess = (): InitializedSuccessActionType => ({
   type: INITIALIZED_SUCCESS,
 });
 
-export const setGlobalError = (error) => ({ type: SET_ERROR_SUCCESS, error });
+type SetGlobalErrorActionType = {
+  type: typeof SET_ERROR_SUCCESS;
+  error: any;
+};
+export const setGlobalError = (error: any): SetGlobalErrorActionType => ({
+  type: SET_ERROR_SUCCESS,
+  error,
+});
 
-export const initializeApp = (userId, token) => (dispatch) => {
-  const promise = dispatch(passAuthorization(userId, token));
+export const initializeApp = (token: string | null) => (dispatch: any) => {
+  const promise = dispatch(passAuthorization(token));
   Promise.all([promise]).then(dispatch(initializedSuccess()));
 };
 
