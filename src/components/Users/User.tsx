@@ -1,8 +1,17 @@
 import { NavLink } from "react-router-dom";
 import styles from "./Users.module.css";
 import userPhoto from "../../assets/images/userPhoto.png";
+import { UserType } from "../../redux/users-reducer";
 
-const User = ({
+type PropsType = {
+  user: UserType;
+  subscribingInProgress: Array<number>;
+  unsubscribe: (userId: number, token: string | null) => void;
+  subscribe: (userId: number, token: string | null) => void;
+  token: string | null;
+};
+
+const User: React.FC<PropsType> = ({
   user,
   subscribingInProgress,
   unsubscribe,

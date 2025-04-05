@@ -2,19 +2,32 @@ import React from "react";
 import styles from "./Users.module.css";
 import Pagination from "../common/Pagination";
 import User from "./User";
+import { UserType } from "../../redux/users-reducer";
 
-const Users = ({
+type PropsType = {
+  totalUsersCount: number;
+  currentPage: number;
+  onChangePageNumber: (pageNumber: number) => void;
+  pageSize?: number;
+  portionSize?: number;
+  usersList: Array<UserType>;
+  subscribingInProgress: Array<number>;
+  unsubscribe: (userId: number, token: string | null) => void;
+  subscribe: (userId: number, token: string | null) => void;
+  token: string | null;
+};
+
+const Users: React.FC<PropsType> = ({
   totalUsersCount,
   currentPage,
   onChangePageNumber,
   pageSize,
   portionSize,
-  user,
+  usersList,
   subscribingInProgress,
   unsubscribe,
   subscribe,
   token,
-  ...props
 }) => {
   return (
     <div className={styles.content}>
@@ -26,7 +39,7 @@ const Users = ({
         portionSize={portionSize}
       />
 
-      {props.usersList.map((u) => (
+      {usersList.map((u) => (
         <div key={u.id}>
           <User
             user={u}

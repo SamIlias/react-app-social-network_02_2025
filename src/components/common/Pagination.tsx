@@ -2,7 +2,15 @@ import { useState } from "react";
 import styles from "./Pagination.module.css";
 import cn from "classnames";
 
-const Pagination = ({
+type PropsType = {
+  totalItemsCount: number;
+  currentPage: number;
+  onChangePageNumber: (pageNumber: number) => void;
+  pageSize?: number;
+  portionSize?: number;
+};
+
+const Pagination: React.FC<PropsType> = ({
   totalItemsCount,
   currentPage,
   onChangePageNumber,

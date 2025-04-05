@@ -40,7 +40,10 @@ export function MyApp({ globalError, setGlobalError }) {
             path="/profile/:userId?"
             element={withSuspense(ProfileContainer)}
           />
-          <Route path="/users" element={<UsersContainer />} />
+          <Route
+            path="/users"
+            element={<UsersContainer pageTitle="Samurais" />}
+          />
           <Route path="/messages/*" element={withSuspense(MessagesContainer)} />
           <Route path="/news" element={<News />} />
           <Route path="/music" element={<Music />} />

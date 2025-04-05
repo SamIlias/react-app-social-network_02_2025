@@ -10,7 +10,7 @@ const TOGGLE_IS_FETCHING = "samurai/users/TOGGLE_IS_FETCHING";
 const TOGGLE_SUBSCRIBING_IN_PROGRESS =
   "samurai/users/TOGGLE_SUBSCRIBING_IN_PROGRESS";
 
-type UserType = {
+export type UserType = {
   id: number;
   name: string;
   status: string | null;
@@ -166,7 +166,7 @@ export const toggleSubscribingInProgress = (
 });
 
 // thunk creators -----------------------------------------------
-export const requestUsers = (currentPage: number, pageSize: number) => {
+export const requestUsers = (currentPage: number, pageSize?: number) => {
   return async (dispatch: any) => {
     dispatch(toggleIsFetching(true));
 

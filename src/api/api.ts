@@ -24,7 +24,7 @@ const setHeaders = (
 };
 
 export const usersAPI = {
-  async getUsers(currentPage: number | null, pageSize: number | null) {
+  async getUsers(currentPage?: number, pageSize?: number) {
     return instance
       .get(`users/?page=${currentPage}&count=${pageSize}`)
       .then((response) => {
