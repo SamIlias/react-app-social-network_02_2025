@@ -67,7 +67,7 @@ export const userProfileAPI = {
     });
   },
 
-  async updateStatus(status: string | null, token: string | null) {
+  async updateStatus(status: string, token: string | null) {
     return instance
       .put(
         `profile/status`,

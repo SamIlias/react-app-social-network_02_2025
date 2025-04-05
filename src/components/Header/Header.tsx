@@ -1,10 +1,17 @@
 import s from "./Header.module.css";
 import { NavLink } from "react-router-dom";
+import logo from "../../assets/images/logo.jpg";
 
-const Header = ({ isAuth, userName, logout }) => {
+type PropsType = {
+  isAuth: boolean;
+  userName: string | null;
+  logout: () => void;
+};
+
+const Header: React.FC<PropsType> = ({ isAuth, userName, logout }) => {
   return (
     <header className={s.header}>
-      <img src="https://i.redd.it/p2ami7lbck681.jpg" alt="logo" />
+      <img src={logo} alt="logo" />
       {isAuth ? (
         <div className={s.login}>
           <span>

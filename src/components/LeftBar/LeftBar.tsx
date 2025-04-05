@@ -1,10 +1,13 @@
 import s from "./LeftBar.module.css";
 import { NavLink } from "react-router-dom";
 
-const Leftbar = ({ items }) => {
+type PropsType = {
+  items: Array<string>;
+};
+
+const Leftbar: React.FC<PropsType> = ({ items }) => {
   const barItems = items.map((el) => {
     const path = el.toLowerCase();
-
     return (
       <div key={el} className={s.item}>
         <NavLink
