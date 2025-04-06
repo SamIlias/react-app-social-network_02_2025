@@ -1,11 +1,8 @@
 import { Field, reduxForm } from "redux-form";
 import s from "./MyPosts.module.css";
-import Post from "./Post/Post.jsx";
-import {
-  maxLengthValidatorCreator,
-  requared,
-} from "../../../utils/validators.js";
-import { Textarea } from "../../common/FormControl/FormControl.js";
+import Post from "./Post/Post";
+import { maxLengthValidatorCreator, required } from "../../../utils/validators";
+import { Textarea } from "../../common/FormControl/FormControl";
 
 const PROFILE_ADD_POST_FORM = "profileAddPost";
 
@@ -38,7 +35,7 @@ const AddPostForm = ({ handleSubmit }) => {
           name="newPostText"
           className={s.textarea}
           placeholder="Write your post here..."
-          validate={[requared, maxLength15]}
+          validate={[required, maxLength15]}
         />
       </div>
       <div>

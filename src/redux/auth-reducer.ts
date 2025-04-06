@@ -11,7 +11,7 @@ const initialState = {
   login: null as string | null,
   isAuth: false,
   token: null as string | null,
-  captchaUrl: null as string | null, // if null captcha is not requared
+  captchaUrl: "" as string, // if null captcha is not required
   isFetching: false,
 };
 
@@ -97,7 +97,7 @@ export const passAuthorization = (token: string | null) => {
 };
 
 export const login =
-  (email: string, password: string, rememberMe: boolean, captcha: string) =>
+  (email: string, password: string, rememberMe: boolean, captcha?: string) =>
     async (dispatch: any) => {
       const data = await authAPI.login(email, password, rememberMe, captcha);
 

@@ -1,9 +1,9 @@
 import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
-import { Field, reduxForm, reset } from "redux-form";
-import { maxLengthValidatorCreator, requared } from "../../utils/validators.js";
-import { Textarea } from "../common/FormControl/FormControl.js";
+import { Field, reduxForm } from "redux-form";
+import { maxLengthValidatorCreator, required } from "../../utils/validators";
+import { Textarea } from "../common/FormControl/FormControl";
 
 const ADD_MESSAGE_FORM = "addMessageForm";
 const maxLength15 = maxLengthValidatorCreator(15);
@@ -39,7 +39,7 @@ const AddMessageForm = ({ handleSubmit }) => {
         <Field
           className={style.textarea}
           component={Textarea}
-          validate={[requared, maxLength15]}
+          validate={[required, maxLength15]}
           name="newMessageText"
           placeholder="Write your message here..."
         />

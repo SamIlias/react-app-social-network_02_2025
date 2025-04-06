@@ -4,7 +4,7 @@ import s from "../Profile.module.css";
 import { createField, Input } from "../../common/FormControl/FormControl";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import userPhoto from "../../../assets/images/userPhoto.png";
-import { requared } from "../../../utils/validators";
+import { required } from "../../../utils/validators";
 
 export const ProfileDataForm = ({
   profile,
@@ -35,7 +35,7 @@ export const ProfileDataForm = ({
               "fullName",
               "Full name",
               Input,
-              [requared],
+              [required],
               {},
               null,
             )}
@@ -65,7 +65,7 @@ export const ProfileDataForm = ({
               "aboutMe",
               "About",
               Input,
-              [requared],
+              [required],
               {},
               null,
             )}
@@ -80,7 +80,7 @@ export const ProfileDataForm = ({
               "lookingForAJob",
               "Looking for a job",
               Input,
-              [requared],
+              [required],
               {},
               null,
             )}
@@ -95,7 +95,7 @@ export const ProfileDataForm = ({
               "lookingForAJobDescription",
               "My professional skills",
               Input,
-              [requared],
+              [required],
               {},
               null,
             )}

@@ -1,7 +1,15 @@
-import { Field } from "redux-form";
+import { Field, WrappedFieldProps } from "redux-form";
 import styles from "./FormControl.module.css";
+import { ValidatorType } from "../../../utils/validators";
 
-export const Textarea = ({ input, meta, ...props }) => {
+type TextareaProps = WrappedFieldProps;
+// & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+export const Textarea: React.FC<TextareaProps> = ({
+  input,
+  meta,
+  ...props
+}) => {
   const hasError = meta.touched && meta.error;
 
   return (
@@ -14,7 +22,7 @@ export const Textarea = ({ input, meta, ...props }) => {
   );
 };
 
-export const Input = ({ input, meta, ...props }) => {
+export const Input: React.FC<TextareaProps> = ({ input, meta, ...props }) => {
   const hasError = meta.touched && meta.error;
 
   return (
@@ -28,11 +36,11 @@ export const Input = ({ input, meta, ...props }) => {
 };
 
 export const createField = (
-  className,
-  name,
-  placeholder,
-  component,
-  validators = [],
+  className: string | null,
+  name: string,
+  placeholder: string | null,
+  component: React.FC<WrappedFieldProps>,
+  validators = [] as Array<ValidatorType>,
   props = {},
   text = "",
 ) => {
