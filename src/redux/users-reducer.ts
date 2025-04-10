@@ -1,5 +1,7 @@
-import { usersAPI } from "../api/api";
+import { Dispatch } from "redux";
 import { PhotosType } from "./profile-reducer";
+import { AppStateType, InferActionsTypes } from "./redux-store";
+import { usersAPI } from "../api/users-api";
 
 const SUBSCRIBE = "samurai/users/SUBSCRIBE";
 const UNSUBSCRIBE = "samurai/users/UNSUBSCRIBE";
@@ -29,7 +31,10 @@ const initialState = {
 
 export type InitialState = typeof initialState;
 
-const usersReducer = (state = initialState, action: any): InitialState => {
+const usersReducer = (
+  state = initialState,
+  action: ActionTypes,
+): InitialState => {
   switch (action.type) {
     case SUBSCRIBE:
       return {
@@ -93,7 +98,6 @@ const usersReducer = (state = initialState, action: any): InitialState => {
 export default usersReducer;
 
 //action creators ----------------------------------------------
-// export ?????
 type SubscribeSuccessAcionType = {
   type: typeof SUBSCRIBE;
   userId: number;
@@ -130,88 +134,114 @@ type ToggleSubscribingInProgressAcionType = {
   userId: number;
 };
 
-export const subscribeSuccess = (
-  userId: number,
-): SubscribeSuccessAcionType => ({ type: SUBSCRIBE, userId });
-export const unsubscribeSuccess = (
-  userId: number,
-): UnsubscribeSuccessAcionType => ({ type: UNSUBSCRIBE, userId });
-export const setUsers = (usersList: Array<UserType>): SetUsersAcionType => ({
-  type: SET_USERS,
-  usersList,
-});
-export const setCurrentPage = (pageNum: number): SetCurrentPageAcionType => ({
-  type: SET_CURRENT_PAGE,
-  pageNum,
-});
-export const setTotalUsersCount = (
-  count: number,
-): SetTotalUsersCountAcionType => ({
-  type: SET_TOTAL_USERS_COUNT,
-  count,
-});
-export const toggleIsFetching = (
-  isFetching: boolean,
-): ToggleIsFetchingAcionType => ({
-  type: TOGGLE_IS_FETCHING,
-  isFetching,
-});
-export const toggleSubscribingInProgress = (
-  isFetching: boolean,
-  userId: number,
-): ToggleSubscribingInProgressAcionType => ({
-  type: TOGGLE_SUBSCRIBING_IN_PROGRESS,
-  isFetching,
-  userId,
-});
+// type ActionsType =
+//   | SubscribeSuccessAcionType
+//   | UnsubscribeSuccessAcionType
+//   | SetUsersAcionType
+//   | SetCurrentPageAcionType
+//   | SetTotalUsersCountAcionType
+//   | ToggleIsFetchingAcionType
+//   | ToggleSubscribingInProgressAcionType;
+
+type GetStateType = () => AppStateType;
+type DispatchActionsType = Dispatch<ActionTypes>;
+
+export const actions = {
+  subscribeSuccess: (userId: number) =>
+    ({
+      type: SUBSCRIBE,
+      userId,
+    }) as const,
+
+  unsubscribeSuccess: (userId: number) =>
+    ({
+      type: UNSUBSCRIBE,
+      userId,
+    }) as const,
+
+  setUsers: (usersList: Array<UserType>) =>
+    ({
+      type: SET_USERS,
+      usersList,
+    }) as const,
+
+  setCurrentPage: (pageNum: number) =>
+    ({
+      type: SET_CURRENT_PAGE,
+      pageNum,
+    }) as const,
+
+  setTotalUsersCount: (count: number) =>
+    ({
+      type: SET_TOTAL_USERS_COUNT,
+      count,
+    }) as const,
+
+  toggleIsFetching: (isFetching: boolean) =>
+    ({
+      type: TOGGLE_IS_FETCHING,
+      isFetching,
+    }) as const,
+
+  toggleSubscribingInProgress: (isFetching: boolean, userId: number) =>
+    ({
+      type: TOGGLE_SUBSCRIBING_IN_PROGRESS,
+      isFetching,
+      userId,
+    }) as const,
+};
+
+type ActionTypes = InferActionsTypes<typeof actions>;
 
 // thunk creators -----------------------------------------------
 export const requestUsers = (currentPage: number, pageSize?: number) => {
-  return async (dispatch: any) => {
-    dispatch(toggleIsFetching(true));
+  return async (dispatch: DispatchActionsType, getState: GetStateType) => {
+    dispatch(actions.toggleIsFetching(true));
 
     const data = await usersAPI.getUsers(currentPage, pageSize);
 
-    dispatch(toggleIsFetching(false));
-    dispatch(setUsers(data.items));
-    dispatch(setTotalUsersCount(data.totalCount));
+    dispatch(actions.toggleIsFetching(false));
+    dispatch(actions.setUsers(data.items));
+    dispatch(actions.setTotalUsersCount(data.totalCount));
   };
 };
 
-const subscribeUnsubscribeFlow = async (
-  dispatch: any,
+const _subscribeUnsubscribeFlow = async (
+  dispatch: DispatchActionsType,
   userId: number,
   apiMethod: (userId: number, token: string | null) => any,
-  actionCreator: (userId: number) => void,
+  actionCreator: (
+    userId: number,
+  ) => SubscribeSuccessAcionType | UnsubscribeSuccessAcionType,
   token: string | null,
 ) => {
-  dispatch(toggleSubscribingInProgress(true, userId));
+  dispatch(actions.toggleSubscribingInProgress(true, userId));
   const data = await apiMethod(userId, token);
   if (data.resultCode === 0) {
     dispatch(actionCreator(userId));
   }
-  dispatch(toggleSubscribingInProgress(false, userId));
+  dispatch(actions.toggleSubscribingInProgress(false, userId));
 };
 
 export const unsubscribe = (userId: number, token: string | null) => {
-  return (dispatch: any) => {
-    subscribeUnsubscribeFlow(
+  return (dispatch: DispatchActionsType, getState: GetStateType) => {
+    _subscribeUnsubscribeFlow(
       dispatch,
       userId,
       usersAPI.unsubscribeFromUser,
-      unsubscribeSuccess,
+      actions.unsubscribeSuccess,
       token,
     );
   };
 };
 
 export const subscribe = (userId: number, token: string | null) => {
-  return (dispatch: any) => {
-    subscribeUnsubscribeFlow(
+  return (dispatch: DispatchActionsType, getState: GetStateType) => {
+    _subscribeUnsubscribeFlow(
       dispatch,
       userId,
       usersAPI.subscribeToUser,
-      subscribeSuccess,
+      actions.subscribeSuccess,
       token,
     );
   };

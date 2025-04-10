@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import {
   subscribe,
   unsubscribe,
-  setCurrentPage,
+  actions,
   requestUsers,
   UserType,
 } from "../../redux/users-reducer";
@@ -93,6 +93,8 @@ class UsersContainer extends React.Component<PropsType> {
     );
   }
 }
+
+const setCurrentPage = actions.setCurrentPage;
 
 export default compose(
   connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(

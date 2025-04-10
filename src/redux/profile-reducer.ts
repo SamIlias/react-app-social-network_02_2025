@@ -1,5 +1,5 @@
 import { stopSubmit } from "redux-form";
-import { usersAPI, userProfileAPI } from "../api/api";
+import { profileAPI } from "../api/profile-api";
 
 const ADD_POST = "samurai/profile/ADD-POST";
 const DELETE_POST = "samurai/profile/DELETE_POST";
@@ -143,21 +143,21 @@ export const setUserStatus = (status: string): setUserStatusActionType => ({
 // thunk creators -----------------------------------------
 export const getUserProfileThunkCreator = (id: number) => {
   return async (dispatch: any) => {
-    const data = await usersAPI.getProfile(id);
+    const data = await profileAPI.getProfile(id);
     dispatch(setUserProfile(data));
   };
 };
 
 export const getUserStatusTC = (id: number) => {
   return async (dispatch: any) => {
-    const data = await userProfileAPI.getStatus(id);
+    const data = await profileAPI.getStatus(id);
     dispatch(setUserStatus(data));
   };
 };
 
 export const updateUserStatusTC = (status: string, token: string | null) => {
   return async (dispatch: any) => {
-    const data = await userProfileAPI.updateStatus(status, token);
+    const data = await profileAPI.updateStatus(status, token);
     if (data.resultCode === 0) {
       dispatch(setUserStatus(status));
     }
@@ -166,9 +166,9 @@ export const updateUserStatusTC = (status: string, token: string | null) => {
 
 export const saveProfilePhoto = (profilePhoto: any, token: string) => {
   return async (dispatch: any) => {
-    const data = await userProfileAPI.saveProfilePhoto(profilePhoto, token);
+    const data = await profileAPI.saveProfilePhoto(profilePhoto, token);
     if (data.resultCode === 0) {
-      dispatch(savePhotoSuccess(data.data.photos));
+      dispatch(savePhotoSuccess(data.data));
     }
   };
 };
@@ -180,7 +180,7 @@ export const saveProfile = (
 ) => {
   return async (dispatch: any, getState: any) => {
     const userId = getState().auth.userId;
-    const data = await userProfileAPI.saveProfile(profile, token);
+    const data = await profileAPI.saveProfile(profile, token);
     if (data.resultCode === 0) {
       dispatch(getUserProfileThunkCreator(userId));
       callbackSuccess();

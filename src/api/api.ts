@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.0/",
   withCredentials: true,
   headers: {
@@ -8,10 +8,10 @@ const instance = axios.create({
   },
 });
 
-const contentTypeDefault = "application/json";
+export const contentTypeDefault = "application/json";
 type contentTypeDefaultType = typeof contentTypeDefault;
 
-const setHeaders = (
+export const setHeaders = (
   token: string | null,
   contentType: string | contentTypeDefaultType,
 ) => {
@@ -23,116 +23,17 @@ const setHeaders = (
   };
 };
 
-export const usersAPI = {
-  async getUsers(currentPage?: number, pageSize?: number) {
-    return instance
-      .get(`users/?page=${currentPage}&count=${pageSize}`)
-      .then((response) => {
-        return response.data;
-      });
-  },
+export enum ResultCodesEnum {
+  success = 0,
+  error = 1,
+}
 
-  async getProfile(userId: number | null) {
-    console.warn("Obsolete method. Use userProfileAPI object.");
-    return userProfileAPI.getProfile(userId);
-  },
+export enum ResultCodesEnumForCaptchaEnum {
+  captchIsRequired = 10,
+}
 
-  async subscribeToUser(userId: number | null, token: string | null) {
-    return instance
-      .post(`follow/${userId}`, {}, setHeaders(token, contentTypeDefault))
-      .then((response) => {
-        return response.data;
-      });
-  },
-
-  async unsubscribeFromUser(userId: number | null, token: string | null) {
-    return instance
-      .delete(`follow/${userId}`, setHeaders(token, contentTypeDefault))
-      .then((response) => {
-        return response.data;
-      });
-  },
-};
-
-export const userProfileAPI = {
-  async getProfile(userId: number | null) {
-    return instance.get(`profile/${userId}`).then((response) => {
-      return response.data;
-    });
-  },
-
-  async getStatus(userId: number | null) {
-    return instance.get(`profile/status/${userId}`).then((response) => {
-      return response.data;
-    });
-  },
-
-  async updateStatus(status: string, token: string | null) {
-    return instance
-      .put(
-        `profile/status`,
-        { status: status },
-        setHeaders(token, contentTypeDefault),
-      )
-      .then((response) => {
-        return response.data;
-      });
-  },
-
-  async saveProfilePhoto(image: string | null, token: string | null) {
-    return instance
-      .put(
-        `profile/photo`,
-        { image: image },
-        setHeaders(token, "multipart/form-data"),
-      )
-      .then((response) => {
-        return response.data;
-      });
-  },
-
-  async saveProfile(profile: any, token: string | null) {
-    return instance
-      .put(`profile`, profile, setHeaders(token, contentTypeDefault))
-      .then((response) => {
-        return response.data;
-      });
-  },
-};
-
-export const authAPI = {
-  async getAuthData(token: string | null) {
-    return instance
-      .get(`auth/me`, setHeaders(token, contentTypeDefault))
-      .then((response) => {
-        return response.data;
-      });
-  },
-
-  async login(
-    email: string | null,
-    password: string | null,
-    rememberMe = false,
-    captcha: string | null = null,
-  ) {
-    return instance
-      .post(`auth/login`, { email, password, rememberMe, captcha })
-      .then((response) => {
-        return response.data;
-      });
-  },
-
-  async logout() {
-    return instance.delete(`auth/login`).then((response) => {
-      return response.data;
-    });
-  },
-};
-
-export const securityAPI = {
-  async getCaptchaUrl() {
-    return instance
-      .get("/security/get-captcha-url")
-      .then((response) => response.data);
-  },
+export type GetItemsType<ItemType> = {
+  items: Array<ItemType>;
+  totalCount: number;
+  error: string | null;
 };

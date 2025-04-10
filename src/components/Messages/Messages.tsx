@@ -1,14 +1,25 @@
 import style from "./Messages.module.css";
 import DialogsItem from "./DialogsItem/DialogsItem";
 import MessagesItem from "./MessagesItem/MessagesItem";
-import { Field, reduxForm } from "redux-form";
+import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { maxLengthValidatorCreator, required } from "../../utils/validators";
 import { Textarea } from "../common/FormControl/FormControl";
+import { DialogType, MessageType } from "../../redux/messages-reducer";
 
 const ADD_MESSAGE_FORM = "addMessageForm";
 const maxLength15 = maxLengthValidatorCreator(15);
 
-const Messages = ({ dialogsList, messagesList, sendMessage }) => {
+type PropsType = {
+  dialogsList: Array<DialogType>;
+  messagesList: Array<MessageType>;
+  sendMessage: (newMessageText: string, form: string) => void;
+};
+
+const Messages: React.FC<PropsType> = ({
+  dialogsList,
+  messagesList,
+  sendMessage,
+}) => {
   const dialogsItems = dialogsList.map((d) => (
     <DialogsItem key={d.id} id={d.id} name={d.name} />
   ));
@@ -17,7 +28,7 @@ const Messages = ({ dialogsList, messagesList, sendMessage }) => {
     <MessagesItem key={messageData.id} itemData={messageData} />
   ));
 
-  const onSubmit = (values) => {
+  const onSubmit = (values: any) => {
     sendMessage(values.newMessageText, ADD_MESSAGE_FORM);
   };
 
@@ -32,7 +43,15 @@ const Messages = ({ dialogsList, messagesList, sendMessage }) => {
   );
 };
 
-const AddMessageForm = ({ handleSubmit }) => {
+type MessageFormValuesType = {
+  newMessageText: string;
+};
+
+type OwnProps = {};
+
+const AddMessageForm: React.FC<
+  InjectedFormProps<MessageFormValuesType & OwnProps> & OwnProps
+> = ({ handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -51,8 +70,8 @@ const AddMessageForm = ({ handleSubmit }) => {
   );
 };
 
-const AddMessageReduxForm = reduxForm({ form: ADD_MESSAGE_FORM })(
-  AddMessageForm,
-);
+const AddMessageReduxForm = reduxForm<MessageFormValuesType, OwnProps>({
+  form: ADD_MESSAGE_FORM,
+})(AddMessageForm);
 
 export default Messages;

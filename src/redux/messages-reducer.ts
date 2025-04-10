@@ -5,12 +5,12 @@ import messageAvaOrange from "../assets/images/messageAvaOrange.png";
 
 const SEND_MESSAGE = "samurai/messages/SEND-MESSAGE";
 
-type DialogType = {
+export type DialogType = {
   id: number;
   name: string;
 };
 
-type MessageType = {
+export type MessageType = {
   id: number;
   message: string;
   image: string; // check type ????

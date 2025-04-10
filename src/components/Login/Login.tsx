@@ -10,28 +10,60 @@ import { AppStateType } from "../../redux/redux-store";
 
 const maxLength50 = maxLengthValidatorCreator(50);
 
-// form -----------------------------------------------------
+// Types ------------------------------------------------------
+type FormDataType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captchaURL?: string;
+};
+
+type MapStatePropsType = {
+  isAuth: boolean;
+  captchaURL?: string;
+};
+
+type MapDispatchPropsType = {
+  login: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captchaURL?: string,
+  ) => void;
+};
+
+type OwnPropsType = {};
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
+
 type LoginFormValuesType = {
   email: string;
   password: string;
   rememberMe: boolean;
+  captchaURL?: string;
 };
+
+type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>;
 
 type OwnProps = {
-  captchaUrl?: string;
+  captchaURL?: string;
 };
 
+// form -----------------------------------------------------
 const LoginForm: React.FC<
-  InjectedFormProps<LoginFormValuesType & OwnProps> & OwnProps
-> = ({ handleSubmit, error, captchaUrl }) => {
+  InjectedFormProps<LoginFormValuesType, OwnProps> & OwnProps
+> = ({ handleSubmit, error, captchaURL }) => {
   return (
     <form onSubmit={handleSubmit}>
-      {createField(styles.field, "email", "Email", Input, [
-        required,
-        maxLength50,
-      ])}
+      {createField<LoginFormValuesTypeKeys>(
+        styles.field,
+        "email",
+        "Email",
+        Input,
+        [required, maxLength50],
+      )}
 
-      {createField(
+      {createField<LoginFormValuesTypeKeys>(
         styles.field,
         "password",
         "Password",
@@ -42,7 +74,7 @@ const LoginForm: React.FC<
 
       {error && <div className={errorStyle.formSummaryError}>{error}</div>}
 
-      {createField(
+      {createField<LoginFormValuesTypeKeys>(
         styles.rememberMe,
         "rememberMe",
         null,
@@ -52,11 +84,11 @@ const LoginForm: React.FC<
         "remember me",
       )}
 
-      {captchaUrl && <img src={captchaUrl} alt="" />}
-      {captchaUrl &&
-        createField(
+      {captchaURL && <img src={captchaURL} alt="" />}
+      {captchaURL &&
+        createField<LoginFormValuesTypeKeys>(
           styles.field,
-          "captchaUrl",
+          "captchaURL",
           "symbols from captcha",
           Input,
           [required],
@@ -75,39 +107,13 @@ const LoginReduxForm = reduxForm<LoginFormValuesType, OwnProps>({
 })(LoginForm);
 
 // Login component------------------------------------------------
-
-type FormDataType = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-  captchaUrl?: string;
-};
-
-type MapStatePropsType = {
-  isAuth: boolean;
-  captchaUrl?: string;
-};
-
-type MapDispatchPropsType = {
-  login: (
-    email: string,
-    password: string,
-    rememberMe: boolean,
-    captchaUrl?: string,
-  ) => void;
-};
-
-type OwnPropsType = {};
-
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
-
-const Login: React.FC<PropsType> = ({ login, isAuth, captchaUrl }) => {
+const Login: React.FC<PropsType> = ({ login, isAuth, captchaURL }) => {
   const onSubmit = (formData: FormDataType) => {
     login(
       formData.email,
       formData.password,
       formData.rememberMe,
-      formData.captchaUrl,
+      formData.captchaURL,
     );
   };
 
@@ -118,13 +124,13 @@ const Login: React.FC<PropsType> = ({ login, isAuth, captchaUrl }) => {
   return (
     <div>
       <h1>Login</h1>
-      <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
+      <LoginReduxForm onSubmit={onSubmit} captchaURL={captchaURL} />
     </div>
   );
 };
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
-  captchaUrl: state.auth.captchaUrl,
+  captchaURL: state.auth.captchaURL,
   isAuth: state.auth.isAuth,
 });
 

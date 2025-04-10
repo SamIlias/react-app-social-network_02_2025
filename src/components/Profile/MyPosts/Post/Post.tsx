@@ -1,6 +1,10 @@
 import s from "./Post.module.css";
 
-const Post = ({ postText }) => {
+type PropsType = {
+  postText: string;
+};
+
+const Post: React.FC<PropsType> = ({ postText }) => {
   return (
     <div className={s.item}>
       <img
