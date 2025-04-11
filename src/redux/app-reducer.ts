@@ -1,16 +1,18 @@
 import { passAuthorization } from "./auth-reducer";
+import { BaseThunkType, InferActionsTypes } from "./redux-store";
 
 const INITIALIZED_SUCCESS = "ilias/app/INITIALIZED_SUCCESS";
 const SET_ERROR_SUCCESS = "ilias/app/SET_ERROR_SUCCESS";
 
 const initialState = {
   initialized: false,
-  globalError: null,
+  globalError: null as string | null,
 };
 
-type InitialStateType = typeof initialState;
-
-const appReducer = (state = initialState, action: any): InitialStateType => {
+const appReducer = (
+  state = initialState,
+  action: ActionTypes,
+): InitialStateType => {
   switch (action.type) {
     case INITIALIZED_SUCCESS:
       return {
@@ -29,26 +31,29 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
   }
 };
 
-type InitializedSuccessActionType = {
-  type: typeof INITIALIZED_SUCCESS;
+export const actions = {
+  initializedSuccess: () =>
+    ({
+      type: INITIALIZED_SUCCESS,
+    }) as const,
+
+  setGlobalError: (error: string | null) =>
+    ({
+      type: SET_ERROR_SUCCESS,
+      error,
+    }) as const,
 };
 
-export const initializedSuccess = (): InitializedSuccessActionType => ({
-  type: INITIALIZED_SUCCESS,
-});
-
-type SetGlobalErrorActionType = {
-  type: typeof SET_ERROR_SUCCESS;
-  error: any;
-};
-export const setGlobalError = (error: any): SetGlobalErrorActionType => ({
-  type: SET_ERROR_SUCCESS,
-  error,
-});
-
-export const initializeApp = (token: string | null) => (dispatch: any) => {
-  const promise = dispatch(passAuthorization(token));
-  Promise.all([promise]).then(dispatch(initializedSuccess()));
-};
+export const initializeApp =
+  (token: string | null): ThunkType =>
+  (dispatch) => {
+    const promise = dispatch(passAuthorization(token));
+    Promise.all([promise]).then(() => dispatch(actions.initializedSuccess()));
+  };
 
 export default appReducer;
+
+// types -----------------------------------
+type InitialStateType = typeof initialState;
+type ActionTypes = InferActionsTypes<typeof actions>;
+type ThunkType = BaseThunkType<ActionTypes>;

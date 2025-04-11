@@ -1,5 +1,6 @@
 import { stopSubmit } from "redux-form";
 import { profileAPI } from "../api/profile-api";
+import { BaseThunkType, InferActionsTypes } from "./redux-store";
 
 const ADD_POST = "samurai/profile/ADD-POST";
 const DELETE_POST = "samurai/profile/DELETE_POST";
@@ -9,36 +10,6 @@ const SAVE_PHOTO_SUCCESS = "samurai/profile/SAVE_PHOTO_SUCCESS";
 
 const generateId = (seed: Array<any>) => {
   return seed.length + 1;
-};
-
-export type PostType = {
-  id: number;
-  text: string;
-};
-
-export type ContactsType = {
-  github: string | null;
-  vk: string | null;
-  facebook: string | null;
-  instagram: string | null;
-  twitter: string | null;
-  website: string | null;
-  youtube: string | null;
-  mainLink: string | null;
-};
-
-export type PhotosType = {
-  small: string | null;
-  large: string | null;
-};
-
-export type ProfileType = {
-  userId: number | null;
-  lookingForAJob: boolean | null;
-  lookingForAJobDescription: string | null;
-  fulName: string | null;
-  contacts: ContactsType | {};
-  photos: PhotosType | null;
 };
 
 const initialState = {
@@ -57,11 +28,9 @@ const initialState = {
   status: "---------------",
 };
 
-export type InitialStateType = typeof initialState;
-
 const profileReducer = (
   state = initialState,
-  action: any,
+  action: ActionTypes,
 ): InitialStateType => {
   switch (action.type) {
     case ADD_POST:
@@ -104,71 +73,69 @@ const profileReducer = (
 
 export default profileReducer;
 
-// action creators ----------------------------------------
-type addPostActionType = { type: typeof ADD_POST; newPostText: string };
-type deletePostActionType = { type: typeof DELETE_POST; postId: number };
-type savePhotoActionType = {
-  type: typeof SAVE_PHOTO_SUCCESS;
-  photos: PhotosType;
+export const actions = {
+  addPost: (newPostText: string) =>
+    ({
+      type: ADD_POST,
+      newPostText,
+    }) as const,
+  deletePost: (postId: number) =>
+    ({
+      type: DELETE_POST,
+      postId,
+    }) as const,
+  savePhotoSuccess: (photos: PhotosType) =>
+    ({
+      type: SAVE_PHOTO_SUCCESS,
+      photos,
+    }) as const,
+  setUserProfile: (profile: ProfileType) =>
+    ({
+      type: SET_USER_PROFILE,
+      profile,
+    }) as const,
+  setUserStatus: (status: string) =>
+    ({
+      type: SET_USER_STATUS,
+      status,
+    }) as const,
 };
-type setUserProfileActionType = {
-  type: typeof SET_USER_PROFILE;
-  profile: ProfileType;
-};
-type setUserStatusActionType = { type: typeof SET_USER_STATUS; status: string };
-
-export const addPost = (newPostText: string): addPostActionType => ({
-  type: ADD_POST,
-  newPostText,
-});
-export const deletePost = (postId: number): deletePostActionType => ({
-  type: DELETE_POST,
-  postId,
-});
-export const savePhotoSuccess = (photos: PhotosType): savePhotoActionType => ({
-  type: SAVE_PHOTO_SUCCESS,
-  photos,
-});
-export const setUserProfile = (
-  profile: ProfileType,
-): setUserProfileActionType => ({
-  type: SET_USER_PROFILE,
-  profile,
-});
-export const setUserStatus = (status: string): setUserStatusActionType => ({
-  type: SET_USER_STATUS,
-  status,
-});
 
 // thunk creators -----------------------------------------
-export const getUserProfileThunkCreator = (id: number) => {
-  return async (dispatch: any) => {
+export const getUserProfileThunkCreator = (id: number | null): ThunkType => {
+  return async (dispatch) => {
     const data = await profileAPI.getProfile(id);
-    dispatch(setUserProfile(data));
+    dispatch(actions.setUserProfile(data));
   };
 };
 
-export const getUserStatusTC = (id: number) => {
-  return async (dispatch: any) => {
+export const getUserStatusTC = (id: number): ThunkType => {
+  return async (dispatch) => {
     const data = await profileAPI.getStatus(id);
-    dispatch(setUserStatus(data));
+    dispatch(actions.setUserStatus(data));
   };
 };
 
-export const updateUserStatusTC = (status: string, token: string | null) => {
-  return async (dispatch: any) => {
+export const updateUserStatusTC = (
+  status: string,
+  token: string | null,
+): ThunkType => {
+  return async (dispatch) => {
     const data = await profileAPI.updateStatus(status, token);
     if (data.resultCode === 0) {
-      dispatch(setUserStatus(status));
+      dispatch(actions.setUserStatus(status));
     }
   };
 };
 
-export const saveProfilePhoto = (profilePhoto: any, token: string) => {
-  return async (dispatch: any) => {
+export const saveProfilePhoto = (
+  profilePhoto: any,
+  token: string,
+): ThunkType => {
+  return async (dispatch) => {
     const data = await profileAPI.saveProfilePhoto(profilePhoto, token);
     if (data.resultCode === 0) {
-      dispatch(savePhotoSuccess(data.data));
+      dispatch(actions.savePhotoSuccess(data.data));
     }
   };
 };
@@ -177,13 +144,17 @@ export const saveProfile = (
   profile: ProfileType,
   token: string | null,
   callbackSuccess: () => void,
-) => {
-  return async (dispatch: any, getState: any) => {
+): ThunkType => {
+  return async (dispatch, getState) => {
     const userId = getState().auth.userId;
     const data = await profileAPI.saveProfile(profile, token);
     if (data.resultCode === 0) {
-      dispatch(getUserProfileThunkCreator(userId));
-      callbackSuccess();
+      if (userId !== null) {
+        dispatch(getUserProfileThunkCreator(userId));
+        callbackSuccess();
+      } else {
+        throw new Error("user id can not be null");
+      }
     } else {
       const error = data.messages.length > 0 ? data.messages[0] : "some error";
       dispatch(stopSubmit("edit-profile", { _error: error }));
@@ -191,3 +162,37 @@ export const saveProfile = (
     }
   };
 };
+
+export type PostType = {
+  id: number;
+  text: string;
+};
+
+export type ContactsType = {
+  github: string | null;
+  vk: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  twitter: string | null;
+  website: string | null;
+  youtube: string | null;
+  mainLink: string | null;
+};
+
+export type PhotosType = {
+  small: string | null;
+  large: string | null;
+};
+
+export type ProfileType = {
+  userId: number | null;
+  lookingForAJob: boolean | null;
+  lookingForAJobDescription: string | null;
+  fulName: string | null;
+  contacts: ContactsType | {};
+  photos: PhotosType | null;
+};
+
+export type InitialStateType = typeof initialState;
+type ActionTypes = InferActionsTypes<typeof actions>;
+type ThunkType = BaseThunkType<ActionTypes | ReturnType<typeof stopSubmit>>;

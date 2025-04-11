@@ -8,12 +8,10 @@ import UsersContainer from "./components/Users/UsersContainer";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import React, { lazy, useEffect } from "react";
-import { compose } from "redux";
 import { connect } from "react-redux";
-import { initializeApp, setGlobalError } from "./redux/app-reducer";
+import { actions } from "./redux/app-reducer";
 import { withSuspense } from "./hoc/withSuspense";
-// import ProfileContainer from "./components/Profile/ProfileContainer";
-// import MessagesContainer from "./components/Messages/MessagesContainer";
+
 const MessagesContainer = lazy(
   () => import("./components/Messages/MessagesContainer"),
 );
@@ -60,5 +58,5 @@ const mapStateToProps = (state) => ({
   globalError: state.app.globalError,
 });
 
+const setGlobalError = actions.setGlobalError;
 export default connect(mapStateToProps, { setGlobalError })(MyApp);
-// export default compose(connect(mapStateToProps, { initializeApp })(myApp));

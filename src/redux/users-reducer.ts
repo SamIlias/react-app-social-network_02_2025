@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { PhotosType } from "./profile-reducer";
-import { AppStateType, InferActionsTypes } from "./redux-store";
+import { AppStateType, BaseThunkType, InferActionsTypes } from "./redux-store";
 import { usersAPI } from "../api/users-api";
 
 const SUBSCRIBE = "samurai/users/SUBSCRIBE";
@@ -12,14 +12,6 @@ const TOGGLE_IS_FETCHING = "samurai/users/TOGGLE_IS_FETCHING";
 const TOGGLE_SUBSCRIBING_IN_PROGRESS =
   "samurai/users/TOGGLE_SUBSCRIBING_IN_PROGRESS";
 
-export type UserType = {
-  id: number;
-  name: string;
-  status: string | null;
-  photos: PhotosType;
-  followed: boolean;
-};
-
 const initialState = {
   usersList: [] as Array<UserType>,
   totalUsersCount: 0,
@@ -28,8 +20,6 @@ const initialState = {
   isFetching: true,
   subscribingInProgress: [] as Array<number>, // array of users Ids
 };
-
-export type InitialState = typeof initialState;
 
 const usersReducer = (
   state = initialState,
@@ -97,55 +87,6 @@ const usersReducer = (
 
 export default usersReducer;
 
-//action creators ----------------------------------------------
-type SubscribeSuccessAcionType = {
-  type: typeof SUBSCRIBE;
-  userId: number;
-};
-
-type UnsubscribeSuccessAcionType = {
-  type: typeof UNSUBSCRIBE;
-  userId: number;
-};
-
-type SetUsersAcionType = {
-  type: typeof SET_USERS;
-  usersList: Array<UserType>;
-};
-
-type SetCurrentPageAcionType = {
-  type: typeof SET_CURRENT_PAGE;
-  pageNum: number;
-};
-
-type SetTotalUsersCountAcionType = {
-  type: typeof SET_TOTAL_USERS_COUNT;
-  count: number;
-};
-
-type ToggleIsFetchingAcionType = {
-  type: typeof TOGGLE_IS_FETCHING;
-  isFetching: boolean;
-};
-
-type ToggleSubscribingInProgressAcionType = {
-  type: typeof TOGGLE_SUBSCRIBING_IN_PROGRESS;
-  isFetching: boolean;
-  userId: number;
-};
-
-// type ActionsType =
-//   | SubscribeSuccessAcionType
-//   | UnsubscribeSuccessAcionType
-//   | SetUsersAcionType
-//   | SetCurrentPageAcionType
-//   | SetTotalUsersCountAcionType
-//   | ToggleIsFetchingAcionType
-//   | ToggleSubscribingInProgressAcionType;
-
-type GetStateType = () => AppStateType;
-type DispatchActionsType = Dispatch<ActionTypes>;
-
 export const actions = {
   subscribeSuccess: (userId: number) =>
     ({
@@ -191,8 +132,6 @@ export const actions = {
     }) as const,
 };
 
-type ActionTypes = InferActionsTypes<typeof actions>;
-
 // thunk creators -----------------------------------------------
 export const requestUsers = (currentPage: number, pageSize?: number) => {
   return async (dispatch: DispatchActionsType, getState: GetStateType) => {
@@ -223,8 +162,11 @@ const _subscribeUnsubscribeFlow = async (
   dispatch(actions.toggleSubscribingInProgress(false, userId));
 };
 
-export const unsubscribe = (userId: number, token: string | null) => {
-  return (dispatch: DispatchActionsType, getState: GetStateType) => {
+export const unsubscribe = (
+  userId: number,
+  token: string | null,
+): ThunkType => {
+  return (dispatch) => {
     _subscribeUnsubscribeFlow(
       dispatch,
       userId,
@@ -235,8 +177,8 @@ export const unsubscribe = (userId: number, token: string | null) => {
   };
 };
 
-export const subscribe = (userId: number, token: string | null) => {
-  return (dispatch: DispatchActionsType, getState: GetStateType) => {
+export const subscribe = (userId: number, token: string | null): ThunkType => {
+  return (dispatch) => {
     _subscribeUnsubscribeFlow(
       dispatch,
       userId,
@@ -246,3 +188,30 @@ export const subscribe = (userId: number, token: string | null) => {
     );
   };
 };
+
+// types ----------------------------------------------
+export type UserType = {
+  id: number;
+  name: string;
+  status: string | null;
+  photos: PhotosType;
+  followed: boolean;
+};
+
+export type InitialState = typeof initialState;
+
+type SubscribeSuccessAcionType = {
+  type: typeof SUBSCRIBE;
+  userId: number;
+};
+
+type UnsubscribeSuccessAcionType = {
+  type: typeof UNSUBSCRIBE;
+  userId: number;
+};
+
+type ActionTypes = InferActionsTypes<typeof actions>;
+
+type GetStateType = () => AppStateType;
+type DispatchActionsType = Dispatch<ActionTypes>;
+type ThunkType = BaseThunkType<ActionTypes>;

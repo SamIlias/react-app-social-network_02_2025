@@ -1,9 +1,5 @@
 import Messages from "./Messages";
-import {
-  DialogType,
-  MessageType,
-  sendMessageActionCreator,
-} from "../../redux/messages-reducer";
+import { DialogType, MessageType, actions } from "../../redux/messages-reducer";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
@@ -31,7 +27,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 const mapDispatchToProps = (dispatch: any): MapDispatchPropsType => {
   return {
     sendMessage: (newMessageText, form) => {
-      const action = sendMessageActionCreator(newMessageText);
+      const action = actions.sendMessage(newMessageText);
       dispatch(action);
       dispatch(reset(form));
     },

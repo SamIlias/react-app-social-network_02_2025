@@ -2,19 +2,9 @@
 import blueCircle from "../assets/images/blueCircle.png";
 // @ts-ignore
 import messageAvaOrange from "../assets/images/messageAvaOrange.png";
+import { InferActionsTypes } from "./redux-store";
 
 const SEND_MESSAGE = "samurai/messages/SEND-MESSAGE";
-
-export type DialogType = {
-  id: number;
-  name: string;
-};
-
-export type MessageType = {
-  id: number;
-  message: string;
-  image: string; // check type ????
-};
 
 const initialState = {
   dialogsList: [
@@ -43,13 +33,11 @@ const initialState = {
   ] as Array<MessageType>,
 };
 
-export type InitialStateType = typeof initialState;
-
 const generateID = (seed: Array<any>) => seed.length + 1;
 
 const messagesReducer = (
   state = initialState,
-  action: any,
+  action: ActionTypes,
 ): InitialStateType => {
   switch (action.type) {
     case SEND_MESSAGE:
@@ -72,15 +60,25 @@ const messagesReducer = (
 
 export default messagesReducer;
 
-// action creators ---------------------------------------------
-type SendMessageActionType = {
-  type: typeof SEND_MESSAGE;
-  newMessageText: string | null;
+export const actions = {
+  sendMessage: (newMessageText: string) => ({
+    type: SEND_MESSAGE,
+    newMessageText: newMessageText,
+  }),
 };
 
-export const sendMessageActionCreator = (
-  newMessageText: string,
-): SendMessageActionType => ({
-  type: SEND_MESSAGE,
-  newMessageText: newMessageText,
-});
+// types ---------------------------
+export type DialogType = {
+  id: number;
+  name: string;
+};
+
+export type MessageType = {
+  id: number;
+  message: string;
+  image: string; // check type ????
+};
+
+export type InitialStateType = typeof initialState;
+
+type ActionTypes = InferActionsTypes<typeof actions>;
