@@ -11,6 +11,7 @@ import React, { lazy, useEffect } from "react";
 import { connect } from "react-redux";
 import { actions } from "./redux/app-reducer";
 import { withSuspense } from "./hoc/withSuspense";
+import { AppStateType } from "./redux/redux-store";
 
 const MessagesContainer = lazy(
   () => import("./components/Messages/MessagesContainer"),
@@ -19,7 +20,12 @@ const ProfileContainer = lazy(
   () => import("./components/Profile/ProfileContainer"),
 );
 
-export function MyApp({ globalError, setGlobalError }) {
+type PropsType = {
+  globalError: string | null;
+  setGlobalError: (error: string | null) => void;
+};
+
+function MyApp({ globalError, setGlobalError }: PropsType): React.ReactElement {
   useEffect(() => {
     if (globalError) {
       alert(globalError);
@@ -33,7 +39,7 @@ export function MyApp({ globalError, setGlobalError }) {
       <LeftbarContainer />
       <div className="app-wrapper-content">
         <Routes>
-          <Route exact path="/" element={withSuspense(ProfileContainer)} />
+          <Route path="/" element={withSuspense(ProfileContainer)} />
           <Route
             path="/profile/:userId?"
             element={withSuspense(ProfileContainer)}
@@ -54,7 +60,7 @@ export function MyApp({ globalError, setGlobalError }) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
   globalError: state.app.globalError,
 });
 

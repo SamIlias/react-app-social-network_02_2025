@@ -1,6 +1,7 @@
 import { stopSubmit } from "redux-form";
 import { profileAPI } from "../api/profile-api";
 import { BaseThunkType, InferActionsTypes } from "./redux-store";
+import { Dispatch } from "redux";
 
 const ADD_POST = "samurai/profile/ADD-POST";
 const DELETE_POST = "samurai/profile/DELETE_POST";
@@ -21,7 +22,7 @@ const initialState = {
     userId: null,
     lookingForAJob: null,
     lookingForAJobDescription: null,
-    fulName: null,
+    fullName: null,
     contacts: {},
     photos: null,
   } as ProfileType,
@@ -109,7 +110,7 @@ export const getUserProfileThunkCreator = (id: number | null): ThunkType => {
   };
 };
 
-export const getUserStatusTC = (id: number): ThunkType => {
+export const getUserStatusTC = (id: number | null): ThunkType => {
   return async (dispatch) => {
     const data = await profileAPI.getStatus(id);
     dispatch(actions.setUserStatus(data));
@@ -129,8 +130,8 @@ export const updateUserStatusTC = (
 };
 
 export const saveProfilePhoto = (
-  profilePhoto: any,
-  token: string,
+  profilePhoto: File,
+  token: string | null,
 ): ThunkType => {
   return async (dispatch) => {
     const data = await profileAPI.saveProfilePhoto(profilePhoto, token);
@@ -177,6 +178,7 @@ export type ContactsType = {
   website: string | null;
   youtube: string | null;
   mainLink: string | null;
+  [key: string]: string | null;
 };
 
 export type PhotosType = {
@@ -187,12 +189,16 @@ export type PhotosType = {
 export type ProfileType = {
   userId: number | null;
   lookingForAJob: boolean | null;
-  lookingForAJobDescription: string | null;
-  fulName: string | null;
-  contacts: ContactsType | {};
+  lookingForAJobDescription?: string | null;
+  fullName: string | null;
+  contacts: ContactsType;
   photos: PhotosType | null;
+  aboutMe?: string;
 };
 
 export type InitialStateType = typeof initialState;
+
 type ActionTypes = InferActionsTypes<typeof actions>;
 type ThunkType = BaseThunkType<ActionTypes | ReturnType<typeof stopSubmit>>;
+
+export type DispatchActionsType = Dispatch<ActionTypes>;

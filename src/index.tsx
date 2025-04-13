@@ -17,12 +17,16 @@ window.addEventListener("unhandledrejection", (event) => {
   store.dispatch(actions.setGlobalError(event.reason.toString()));
 });
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(
-  <HashRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </HashRouter>,
-);
+const container = document.getElementById("root");
+if (container) {
+  const root = ReactDOM.createRoot(container);
+  root.render(
+    <HashRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </HashRouter>,
+  );
+} else {
+  console.error("Element with id 'root' did not find");
+}

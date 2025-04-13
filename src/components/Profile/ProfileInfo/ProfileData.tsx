@@ -1,8 +1,17 @@
 import s from "../Profile.module.css";
 import userPhoto from "../../../assets/images/userPhoto.png";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
+import { ProfileType } from "../../../redux/profile-reducer";
+import { ChangeEventHandler } from "react";
 
-export const Contact = ({
+type ContactPropsType = {
+  blockStyle: string | undefined;
+  valueStyle: string | undefined;
+  contactTitle: string;
+  contactValue: string | null;
+};
+
+export const Contact: React.FC<ContactPropsType> = ({
   blockStyle,
   valueStyle,
   contactTitle,
@@ -16,7 +25,17 @@ export const Contact = ({
   );
 };
 
-const ProfileData = ({
+type ProfileDataPropsType = {
+  profile: ProfileType;
+  status: string;
+  token: string | null;
+  updateUserStatus: (status: string, token: string | null) => void;
+  isOwner: boolean;
+  goToEditMode: () => void;
+  onPhotoSelected: ChangeEventHandler<HTMLInputElement>;
+};
+
+const ProfileData: React.FC<ProfileDataPropsType> = ({
   profile,
   status,
   token,
@@ -73,11 +92,11 @@ const ProfileData = ({
       <div className={s.userDescription}>
         Contacts:
         <div className={s.contacts}>
-          {Object.keys(profile.contacts).map((key) => (
+          {Object.keys(profile.contacts).map((key: string) => (
             <Contact
               key={key}
               blockStyle={s.userDescription}
-              valueStyle={null}
+              valueStyle={undefined}
               contactTitle={key}
               contactValue={profile.contacts[key]}
             />

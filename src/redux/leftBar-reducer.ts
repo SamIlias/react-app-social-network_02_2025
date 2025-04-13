@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import { InferActionsTypes } from "./redux-store";
 
 const initialState = {
@@ -18,3 +19,4 @@ export const actions = {};
 export default leftBarReducer;
 
 type ActionTypes = InferActionsTypes<typeof actions>;
+export type DispatchActionsType = Dispatch<ActionTypes>;

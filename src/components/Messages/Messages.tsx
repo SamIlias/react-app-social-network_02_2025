@@ -9,12 +9,20 @@ import { DialogType, MessageType } from "../../redux/messages-reducer";
 const ADD_MESSAGE_FORM = "addMessageForm";
 const maxLength15 = maxLengthValidatorCreator(15);
 
+// types ---------------------------------------------------
 type PropsType = {
   dialogsList: Array<DialogType>;
   messagesList: Array<MessageType>;
   sendMessage: (newMessageText: string, form: string) => void;
 };
 
+type MessageFormValuesType = {
+  newMessageText: string;
+};
+
+type OwnProps = {};
+
+// messages component --------------------------------------
 const Messages: React.FC<PropsType> = ({
   dialogsList,
   messagesList,
@@ -28,7 +36,7 @@ const Messages: React.FC<PropsType> = ({
     <MessagesItem key={messageData.id} itemData={messageData} />
   ));
 
-  const onSubmit = (values: any) => {
+  const onSubmit = (values: MessageFormValuesType) => {
     sendMessage(values.newMessageText, ADD_MESSAGE_FORM);
   };
 
@@ -42,12 +50,6 @@ const Messages: React.FC<PropsType> = ({
     </div>
   );
 };
-
-type MessageFormValuesType = {
-  newMessageText: string;
-};
-
-type OwnProps = {};
 
 const AddMessageForm: React.FC<
   InjectedFormProps<MessageFormValuesType & OwnProps> & OwnProps

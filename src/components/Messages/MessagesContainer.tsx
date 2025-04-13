@@ -1,5 +1,10 @@
 import Messages from "./Messages";
-import { DialogType, MessageType, actions } from "../../redux/messages-reducer";
+import {
+  DialogType,
+  DispatchActionsType,
+  MessageType,
+  actions,
+} from "../../redux/messages-reducer";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
@@ -24,12 +29,14 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any): MapDispatchPropsType => {
+const mapDispatchToProps = (
+  dispatch: DispatchActionsType,
+): MapDispatchPropsType => {
   return {
     sendMessage: (newMessageText, form) => {
       const action = actions.sendMessage(newMessageText);
       dispatch(action);
-      dispatch(reset(form));
+      dispatch(reset(form) as any);
     },
   };
 };

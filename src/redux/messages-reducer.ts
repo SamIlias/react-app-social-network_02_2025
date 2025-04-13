@@ -1,4 +1,5 @@
 // @ts-ignore
+import { Dispatch } from "redux";
 import blueCircle from "../assets/images/blueCircle.png";
 // @ts-ignore
 import messageAvaOrange from "../assets/images/messageAvaOrange.png";
@@ -80,5 +81,5 @@ export type MessageType = {
 };
 
 export type InitialStateType = typeof initialState;
-
 type ActionTypes = InferActionsTypes<typeof actions>;
+export type DispatchActionsType = Dispatch<ActionTypes>;

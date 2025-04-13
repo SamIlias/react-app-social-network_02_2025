@@ -1,3 +1,4 @@
+import { reset } from "redux-form";
 import { passAuthorization } from "./auth-reducer";
 import { BaseThunkType, InferActionsTypes } from "./redux-store";
 
@@ -49,6 +50,12 @@ export const initializeApp =
   (dispatch) => {
     const promise = dispatch(passAuthorization(token));
     Promise.all([promise]).then(() => dispatch(actions.initializedSuccess()));
+  };
+
+export const resetForm =
+  (form: string): ThunkType =>
+  (dispatch) => {
+    dispatch(reset(form));
   };
 
 export default appReducer;

@@ -27,7 +27,7 @@ export const profileAPI = {
       });
   },
 
-  async saveProfilePhoto(image: string | null, token: string | null) {
+  async saveProfilePhoto(image: File | null, token: string | null) {
     return instance
       .put<
         APIResponseType<PhotosType>
