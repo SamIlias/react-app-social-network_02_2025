@@ -32,3 +32,7 @@ export const getSubscribingInProgress = (state: AppStateType) => {
 export const getToken = (state: AppStateType) => {
   return state.auth.token;
 };
+
+export const getUsersFilter = (state: AppStateType) => {
+  return state.usersPage.filter;
+};

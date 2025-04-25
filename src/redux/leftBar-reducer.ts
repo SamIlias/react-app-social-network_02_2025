@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { InferActionsTypes } from "./redux-store";
 
 const initialState = {
-  items: ["Profile", "Users", "Messages", "News", "Music", "Settings"],
+  items: ["Profile", "Users", "Messages", "News", "Music", "Settings", "Chat"],
 };
 
 type InitialStateType = typeof initialState;

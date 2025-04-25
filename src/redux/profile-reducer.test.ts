@@ -11,7 +11,7 @@ const state = {
     lookingForAJobDescription: null,
     fullName: null,
     contacts: {},
-    photos: null,
+    photos: {},
   } as ProfileType,
   status: "---------------",
 };

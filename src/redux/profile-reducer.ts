@@ -24,7 +24,7 @@ const initialState = {
     lookingForAJobDescription: null,
     fullName: null,
     contacts: {},
-    photos: null,
+    photos: {},
   } as ProfileType,
   status: "---------------",
 };
@@ -192,7 +192,7 @@ export type ProfileType = {
   lookingForAJobDescription?: string | null;
   fullName: string | null;
   contacts: ContactsType;
-  photos: PhotosType | null;
+  photos: PhotosType;
   aboutMe?: string;
 };
 

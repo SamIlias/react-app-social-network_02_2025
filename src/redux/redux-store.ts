@@ -13,6 +13,7 @@ import {
   applyMiddleware,
   Action,
 } from "redux";
+import { chatReducer } from "./chat-reducer";
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   form: formReducer,
   app: appReducer,
+  chat: chatReducer,
 });
 
 //@ts-ignore

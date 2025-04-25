@@ -4,7 +4,7 @@ import LeftbarContainer from "./components/LeftBar/LeftBarContainer";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import UsersContainer from "./components/Users/UsersContainer";
+import { UsersPage } from "./components/Users/UsersContainer";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import React, { lazy, useEffect } from "react";
@@ -19,6 +19,8 @@ const MessagesContainer = lazy(
 const ProfileContainer = lazy(
   () => import("./components/Profile/ProfileContainer"),
 );
+
+const ChatPage = React.lazy(() => import("./pages/chat/ChatPage"));
 
 type PropsType = {
   globalError: string | null;
@@ -44,15 +46,13 @@ function MyApp({ globalError, setGlobalError }: PropsType): React.ReactElement {
             path="/profile/:userId?"
             element={withSuspense(ProfileContainer)}
           />
-          <Route
-            path="/users"
-            element={<UsersContainer pageTitle="Samurais" />}
-          />
+          <Route path="/users" element={<UsersPage pageTitle="Samurais" />} />
           <Route path="/messages/*" element={withSuspense(MessagesContainer)} />
           <Route path="/news" element={<News />} />
           <Route path="/music" element={<Music />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/chat" element={withSuspense(ChatPage)} />
           <Route path="*" element={<div>404 NOT FOUND</div>} />
         </Routes>
       </div>

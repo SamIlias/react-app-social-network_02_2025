@@ -11,6 +11,7 @@ const SET_TOTAL_USERS_COUNT = "samurai/users/SET_TOTAL_USERS_COUNT";
 const TOGGLE_IS_FETCHING = "samurai/users/TOGGLE_IS_FETCHING";
 const TOGGLE_SUBSCRIBING_IN_PROGRESS =
   "samurai/users/TOGGLE_SUBSCRIBING_IN_PROGRESS";
+const SET_FILTER = "samurai/users/SET_FILTER";
 
 const initialState = {
   usersList: [] as Array<UserType>,
@@ -19,9 +20,13 @@ const initialState = {
   currentPage: 1,
   isFetching: true,
   subscribingInProgress: [] as Array<number>, // array of users Ids
+  filter: {
+    term: null as string | null,
+    friend: null as null | boolean,
+  },
 };
 
-const usersReducer = (
+export const usersReducer = (
   state = initialState,
   action: ActionTypes,
 ): InitialState => {
@@ -79,6 +84,11 @@ const usersReducer = (
           ? [...state.subscribingInProgress, action.userId]
           : state.subscribingInProgress.filter((id) => id !== action.userId),
       };
+    case SET_FILTER:
+      return {
+        ...state,
+        filter: action.payload,
+      };
 
     default:
       return state;
@@ -130,14 +140,30 @@ export const actions = {
       isFetching,
       userId,
     }) as const,
+
+  setFilter: (filter: { term: string | null; friend: boolean | null }) =>
+    ({
+      type: SET_FILTER,
+      payload: filter,
+    }) as const,
 };
 
 // thunk creators -----------------------------------------------
-export const requestUsers = (currentPage: number, pageSize?: number) => {
-  return async (dispatch: DispatchActionsType, getState: GetStateType) => {
+export const requestUsers = (
+  currentPage: number,
+  pageSize: number,
+  filter: FilterType,
+) => {
+  return async (dispatch: DispatchActionsType) => {
     dispatch(actions.toggleIsFetching(true));
+    dispatch(actions.setFilter({ term: filter.term, friend: filter.friend }));
 
-    const data = await usersAPI.getUsers(currentPage, pageSize);
+    const data = await usersAPI.getUsers(
+      currentPage,
+      pageSize,
+      filter.term,
+      filter.friend,
+    );
 
     dispatch(actions.toggleIsFetching(false));
     dispatch(actions.setUsers(data.items));
@@ -166,8 +192,8 @@ export const unsubscribe = (
   userId: number,
   token: string | null,
 ): ThunkType => {
-  return (dispatch) => {
-    _subscribeUnsubscribeFlow(
+  return async (dispatch) => {
+    await _subscribeUnsubscribeFlow(
       dispatch,
       userId,
       usersAPI.unsubscribeFromUser,
@@ -178,8 +204,8 @@ export const unsubscribe = (
 };
 
 export const subscribe = (userId: number, token: string | null): ThunkType => {
-  return (dispatch) => {
-    _subscribeUnsubscribeFlow(
+  return async (dispatch) => {
+    await _subscribeUnsubscribeFlow(
       dispatch,
       userId,
       usersAPI.subscribeToUser,
@@ -212,6 +238,7 @@ type UnsubscribeSuccessAcionType = {
 
 type ActionTypes = InferActionsTypes<typeof actions>;
 
-type GetStateType = () => AppStateType;
+// type GetStateType = () => AppStateType;
 type DispatchActionsType = Dispatch<ActionTypes>;
 type ThunkType = BaseThunkType<ActionTypes>;
+export type FilterType = typeof initialState.filter;

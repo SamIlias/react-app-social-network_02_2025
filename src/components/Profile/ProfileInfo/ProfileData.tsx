@@ -4,13 +4,6 @@ import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import { ProfileType } from "../../../redux/profile-reducer";
 import { ChangeEventHandler } from "react";
 
-type ContactPropsType = {
-  blockStyle: string | undefined;
-  valueStyle: string | undefined;
-  contactTitle: string;
-  contactValue: string | null;
-};
-
 export const Contact: React.FC<ContactPropsType> = ({
   blockStyle,
   valueStyle,
@@ -23,16 +16,6 @@ export const Contact: React.FC<ContactPropsType> = ({
       <span className={valueStyle}>{contactValue ? contactValue : "none"}</span>
     </div>
   );
-};
-
-type ProfileDataPropsType = {
-  profile: ProfileType;
-  status: string;
-  token: string | null;
-  updateUserStatus: (status: string, token: string | null) => void;
-  isOwner: boolean;
-  goToEditMode: () => void;
-  onPhotoSelected: ChangeEventHandler<HTMLInputElement>;
 };
 
 const ProfileData: React.FC<ProfileDataPropsType> = ({
@@ -108,3 +91,20 @@ const ProfileData: React.FC<ProfileDataPropsType> = ({
 };
 
 export default ProfileData;
+
+type ContactPropsType = {
+  blockStyle: string | undefined;
+  valueStyle: string | undefined;
+  contactTitle: string;
+  contactValue: string | null;
+};
+
+type ProfileDataPropsType = {
+  profile: ProfileType;
+  status: string;
+  token: string | null;
+  updateUserStatus: (status: string, token: string | null) => void;
+  isOwner: boolean;
+  goToEditMode: () => void;
+  onPhotoSelected: ChangeEventHandler<HTMLInputElement>;
+};
