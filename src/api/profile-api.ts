@@ -30,7 +30,7 @@ export const profileAPI = {
   async saveProfilePhoto(image: File | null, token: string | null) {
     return instance
       .put<
-        APIResponseType<PhotosType>
+        APIResponseType<{ photos: PhotosType }>
       >(`profile/photo`, { image: image }, setHeaders(token, "multipart/form-data"))
       .then((response) => {
         return response.data;

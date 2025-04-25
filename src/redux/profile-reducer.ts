@@ -136,7 +136,7 @@ export const saveProfilePhoto = (
   return async (dispatch) => {
     const data = await profileAPI.saveProfilePhoto(profilePhoto, token);
     if (data.resultCode === 0) {
-      dispatch(actions.savePhotoSuccess(data.data));
+      dispatch(actions.savePhotoSuccess(data.data.photos));
     }
   };
 };
