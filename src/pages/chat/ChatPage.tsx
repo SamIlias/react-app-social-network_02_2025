@@ -7,7 +7,9 @@ import {
   startMessagesListening,
   stopMessagesListening,
 } from "../../redux/chat-reducer";
+import { AnyAction } from "redux";
 import { AppStateType } from "../../redux/redux-store";
+import { ThunkDispatch } from "redux-thunk";
 
 const ChatPage: React.FC = () => {
   return (
@@ -18,14 +20,14 @@ const ChatPage: React.FC = () => {
 };
 
 const Chat: React.FC = () => {
-  const dispatch = useDispatch();
   const status = useSelector((state: AppStateType) => state.chat.status);
 
+  type AppDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>;
+  const dispatch: AppDispatch = useDispatch();
+
   useEffect(() => {
-    // @ts-ignore
     dispatch(startMessagesListening());
     return () => {
-      // @ts-ignore
       dispatch(stopMessagesListening());
     };
   }, []);
@@ -83,11 +85,11 @@ const AddMessageForm: React.FC = () => {
 
   const status = useSelector((state: AppStateType) => state.chat.status);
 
-  const dispatch = useDispatch();
+  type AppDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>;
+  const dispatch: AppDispatch = useDispatch();
 
   const sendMessageHandler = () => {
     if (!message) return;
-    //@ts-ignore
     dispatch(sendMessage(message));
     setMessage("");
   };
@@ -111,7 +113,6 @@ const AddMessageForm: React.FC = () => {
 
 const Message: React.FC<{ message: ChatMessageType }> = React.memo(
   ({ message }) => {
-    console.log(">>>>>>>>>>>>Message");
     return (
       <div className={styles.message}>
         <img src={message.photo} alt="ava" /> <b>{message.userName}</b>

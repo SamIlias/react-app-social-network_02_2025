@@ -40,7 +40,6 @@ export const ProfileDataForm: React.FC<
               Input,
               [required],
               {},
-              undefined,
             )}
           </span>
         </div>
@@ -70,7 +69,6 @@ export const ProfileDataForm: React.FC<
               Input,
               [required],
               {},
-              undefined,
             )}
           </span>
         </div>
@@ -85,7 +83,6 @@ export const ProfileDataForm: React.FC<
               Input,
               [required],
               {},
-              undefined,
             )}
           </span>
         </div>
@@ -100,7 +97,6 @@ export const ProfileDataForm: React.FC<
               Input,
               [required],
               {},
-              undefined,
             )}
           </span>
         </div>
@@ -119,7 +115,6 @@ export const ProfileDataForm: React.FC<
                   Input,
                   [],
                   {},
-                  undefined,
                 )}
               </div>
             );
@@ -132,6 +127,7 @@ export const ProfileDataForm: React.FC<
 
 const ProfileDataReduxForm = reduxForm<FormValuesType, OwnProps>({
   form: "edit-profile",
+  enableReinitialize: true,
 })(ProfileDataForm);
 
 export default ProfileDataReduxForm;

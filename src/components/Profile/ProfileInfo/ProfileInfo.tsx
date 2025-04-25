@@ -4,28 +4,6 @@ import ProfileDataReduxForm from "./ProfileDataForm";
 import ProfileData from "./ProfileData";
 import { ContactsType, ProfileType } from "../../../redux/profile-reducer";
 
-type PropsType = {
-  profile: ProfileType;
-  status: string;
-  token: string | null;
-  updateUserStatus: (status: string, token: string | null) => void;
-  isOwner: boolean;
-  savePhoto: (profilePhoto: File, token: string | null) => void;
-  saveProfile: (
-    profile: ProfileType,
-    token: string | null,
-    callbackSuccess: () => void,
-  ) => void;
-};
-
-type FormDataType = {
-  fullName: string;
-  aboutMe?: string;
-  lookingForAJob: boolean;
-  lookingForAJobDescription?: string | null;
-  contacts: ContactsType;
-};
-
 const ProfileInfo: React.FC<PropsType> = ({
   profile,
   status,
@@ -65,6 +43,13 @@ const ProfileInfo: React.FC<PropsType> = ({
           updateUserStatus={updateUserStatus}
           onSubmit={onSubmit}
           onPhotoSelected={onPhotoSelected}
+          initialValues={{
+            fullName: profile.fullName || "",
+            aboutMe: profile.aboutMe || "",
+            lookingForAJob: profile.lookingForAJob ?? false,
+            lookingForAJobDescription: profile.lookingForAJobDescription || "",
+            contacts: profile.contacts || {},
+          }}
         />
       ) : (
         <ProfileData
@@ -82,3 +67,25 @@ const ProfileInfo: React.FC<PropsType> = ({
 };
 
 export default ProfileInfo;
+
+type PropsType = {
+  profile: ProfileType;
+  status: string;
+  token: string | null;
+  updateUserStatus: (status: string, token: string | null) => void;
+  isOwner: boolean;
+  savePhoto: (profilePhoto: File, token: string | null) => void;
+  saveProfile: (
+    profile: ProfileType,
+    token: string | null,
+    callbackSuccess: () => void,
+  ) => void;
+};
+
+type FormDataType = {
+  fullName: string;
+  aboutMe?: string;
+  lookingForAJob: boolean;
+  lookingForAJobDescription?: string | null;
+  contacts: ContactsType;
+};

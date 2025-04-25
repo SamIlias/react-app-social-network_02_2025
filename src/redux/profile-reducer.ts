@@ -2,16 +2,13 @@ import { stopSubmit } from "redux-form";
 import { profileAPI } from "../api/profile-api";
 import { BaseThunkType, InferActionsTypes } from "./redux-store";
 import { Dispatch } from "redux";
+import _ from "lodash";
 
 const ADD_POST = "samurai/profile/ADD-POST";
 const DELETE_POST = "samurai/profile/DELETE_POST";
 const SET_USER_PROFILE = "samurai/profile/SET_USER_PROFILE";
 const SET_USER_STATUS = "samurai/profile/SET_USER_STATUS";
 const SAVE_PHOTO_SUCCESS = "samurai/profile/SAVE_PHOTO_SUCCESS";
-
-const generateId = (seed: Array<any>) => {
-  return seed.length + 1;
-};
 
 const initialState = {
   posts: [
@@ -38,9 +35,8 @@ const profileReducer = (
       if (!action.newPostText) {
         return state;
       }
-      const seed = state.posts;
       const newPost = {
-        id: generateId(seed),
+        id: _.uniqueId(),
         text: action.newPostText,
       };
       return {
@@ -165,7 +161,7 @@ export const saveProfile = (
 };
 
 export type PostType = {
-  id: number;
+  id: string | number;
   text: string;
 };
 
