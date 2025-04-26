@@ -4,6 +4,7 @@ import store from "./redux/redux-store";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { actions } from "./redux/app-reducer";
+import { ConfigProvider } from "antd";
 
 // Global error listener
 window.addEventListener("error", (event) => {
@@ -22,9 +23,20 @@ if (container) {
   const root = ReactDOM.createRoot(container);
   root.render(
     <HashRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#177ddc",
+            colorBgContainer: "#8c8c8c",
+            colorText: "#ff9c6e",
+            borderRadius: 8,
+          },
+        }}
+      >
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ConfigProvider>
     </HashRouter>,
   );
 } else {

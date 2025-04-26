@@ -1,31 +1,30 @@
-.header {
-  grid-area: header;
-  color: white;
-  background: brown;
-  font-size: 50px;
-  padding: 20px;
-}
-
-.header img {
-  width: 80px;
-  border-radius: 80px;
-}
-
-.userName {
-  color: white;
-}
-
-.login {
-  float: right;
-  color: white;
-}
-
-.login button {
-  margin-left: 20px;
-  font-size: 0.5em;
-  color: white;
-  background-color: brown;
-  border-color: brown;
-  vertical-align: super;
-  /* padding: 10px; */
-}
+/* .header { */
+/*   grid-area: header; */
+/*   color: white; */
+/*   background: brown; */
+/*   font-size: 50px; */
+/*   padding: 20px; */
+/* } */
+/**/
+/* .header img { */
+/*   width: 80px; */
+/*   border-radius: 80px; */
+/* } */
+/**/
+/* .userName { */
+/*   color: white; */
+/* } */
+/**/
+/* .login { */
+/*   float: right; */
+/*   color: white; */
+/* } */
+/**/
+/* .login button { */
+/*   margin-left: 20px; */
+/*   font-size: 0.5em; */
+/*   color: white; */
+/*   background-color: brown; */
+/*   border-color: brown; */
+/*   vertical-align: super; */
+/* } */
